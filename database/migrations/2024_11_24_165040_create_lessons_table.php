@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('lessons', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('duration');
-            $table->foreignId('video_id')->constrained('videos');
-            $table->foreignId('course_section_id')->constrained('course_sections');
+            $table->time('duration');
             $table->string('priority');
+            $table->unsignedBigInteger('video_id');
+            $table->foreign('video_id')->references('id')->on('videos');
+            $table->unsignedBigInteger('course_chapter_id');
+            $table->foreign('course_chapter_id')->references('id')->on('course_chapters');
             $table->timestamps();
         });
     }

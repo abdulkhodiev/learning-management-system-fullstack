@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mentors', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->string('fields');
-            $table->string('experience');
-            $table->foreignId('user_id')->constrained('users');
-
+            $table->text('message');
+            $table->string('image')->nullable();
+            $table->boolean('is_read')->default(false);
+            $table->unsignedBigInteger('chat_id');
+            $table->foreign('chat_id')->references('id')->on('chat');
             $table->timestamps();
-
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mentors');
+        Schema::dropIfExists('messages');
     }
 };

@@ -18,14 +18,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('username')->unique();
             $table->string('password');
-            $table->string('role');
+            $table->string('role')->default('student');
             $table->string('image')->nullable();
-            $table->string('language');
-            $table->string('description');
-            $table->string('youtube');
-            $table->string('x');
-            $table->string('website');
-            $table->string('linkedin');
+            $table->string('language')->default('en');
+            $table->string('description')->nullable();
+            $table->string('youtube')->nullable();
+            $table->string('x')->nullable();
+            $table->string('website')->nullable();
+            $table->string('linkedin')->nullable();
             $table->timestamps();
         });
     }

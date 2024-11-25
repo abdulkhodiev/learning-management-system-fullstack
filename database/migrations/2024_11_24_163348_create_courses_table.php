@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
             $table->string('title');
-            $table->array('languages');
-            $table->foreignId('category_id')->constrained('categories');
+            $table->text('description');
+            $table->json('languages');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
+            $table->unsignedBigInteger('mentor_id');
+            $table->foreign('mentor_id')->references('id')->on('mentors');
             $table->string('image');
-            $table->foreignId('mentor_id')->constrained('mentors');
-            $table->string('price');
+            $table->float('price');
             $table->timestamps();
-
         });
     }
 

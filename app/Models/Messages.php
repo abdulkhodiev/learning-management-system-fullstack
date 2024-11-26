@@ -16,8 +16,4 @@ class Messages extends Model
         'is_read'
     ];
 
-    public function chat()
-    {
-        return $this->belongsTo(Chat::class);
-    }
 }

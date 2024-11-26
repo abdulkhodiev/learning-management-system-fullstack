@@ -3,10 +3,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Model
+class User extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, HasRoles;
 
     protected $fillable = [
         'first_name',
@@ -33,30 +35,13 @@ class User extends Model
         return $this->hasMany(Course::class);
     }
 
-    public function completedLessons(){
-        return $this->hasMany(CompletedLessons::class);
-    }
-
-    public function savedCourses(){
-        return $this->hasMany(SavedCourses::class);
-    }
-
-    public function courseStudent(){
-        return $this->hasMany(CourseStudent::class);
-    }
 
 
     public function courseReview(){
         return $this->hasMany(CourseReview::class);
     }
 
-    public function chat(){
-        return $this->hasMany(Chat::class);
-    }
 
-    public function roleUser(){
-        return $this->hasOne(RoleUser::class);
-    }
 
 
 

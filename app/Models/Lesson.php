@@ -27,8 +27,5 @@ class Lesson extends Model
         return $this->belongsTo(CourseChapter::class);
     }
 
-    public function completedLessons()
-    {
-        return $this->hasOne(CompletedLessons::class);
-    }
+
 }

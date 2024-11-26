@@ -39,15 +39,6 @@ class Course extends Model
         return $this->hasMany(CourseChapter::class);
     }
 
-    public function savedCourses()
-    {
-        return $this->hasMany(SavedCourses::class);
-    }
-
-    public function courseStudent(){
-        return $this->hasMany(CourseStudent::class);
-    }
-
     public function courseReview(){
         return $this->hasMany(CourseReview::class);
     }

@@ -23,7 +23,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = GetAllRolesAction::class::execute();
+        $roles = (new GetAllRolesAction())->execute();
         return Inertia::render('Users/Create', [
             'roles' => $roles
         ]);
@@ -37,8 +37,8 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $user = UserWithRolesAction::class::execute($user);
-        $roles = GetAllRolesAction::class::execute();
+        $user = (new UserWithRolesAction())->execute($user);
+        $roles = (new GetAllRolesAction())->execute();
 
         return Inertia::render('Users/Edit', [
             'user' => $user,

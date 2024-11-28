@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use App\Actions\Auth\LoginAction;
 use App\Actions\Auth\LogoutAction;
@@ -38,7 +38,7 @@ class AuthController extends Controller
         $credentials = $request->validated();
 
         if ($this->loginAction->execute($credentials )) {
-            return redirect()->route('dashboard');
+            return redirect()->route('roles');
         }
 
         return back()->withErrors([

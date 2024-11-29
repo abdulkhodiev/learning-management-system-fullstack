@@ -8,6 +8,8 @@ class UserWithRolesAction
 {
     public function execute(User $user): User
     {
-        return $user->load('roles');
+        $user->load('roles');
+        $user->role = $user->roles->first();
+        return $user;
     }
 }

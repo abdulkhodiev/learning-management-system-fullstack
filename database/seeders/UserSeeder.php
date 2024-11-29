@@ -15,27 +15,29 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create Permissions
-        Permission::create(['name' => 'view role']);
-        Permission::create(['name' => 'create role']);
-        Permission::create(['name' => 'update role']);
-        Permission::create(['name' => 'delete role']);
+        // Create Permissions one by one
+        $permissions = [
+            'view role',
+            'create role',
+            'update role',
+            'delete role',
+            'view permission',
+            'create permission',
+            'update permission',
+            'delete permission',
+            'view user',
+            'create user',
+            'update user',
+            'delete user',
+            'view task',
+            'create task',
+            'update task',
+            'delete task',
+        ];
 
-        Permission::create(['name' => 'view permission']);
-        Permission::create(['name' => 'create permission']);
-        Permission::create(['name' => 'update permission']);
-        Permission::create(['name' => 'delete permission']);
-
-        Permission::create(['name' => 'view user']);
-        Permission::create(['name' => 'create user']);
-        Permission::create(['name' => 'update user']);
-        Permission::create(['name' => 'delete user']);
-
-        Permission::create(['name' => 'view task']);
-        Permission::create(['name' => 'create task']);
-        Permission::create(['name' => 'update task']);
-        Permission::create(['name' => 'delete task']);
-
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
 
         // Create Roles
         $superAdminRole = Role::create(['name' => 'super-admin']);
@@ -45,54 +47,52 @@ class UserSeeder extends Seeder
 
         // Lets give all permission to super-admin role.
         $allPermissionNames = Permission::pluck('name')->toArray();
-
         $superAdminRole->givePermissionTo($allPermissionNames);
 
         // Let's give few permissions to admin role.
-        $adminRole->givePermissionTo(['create role', 'view role', 'update role']);
-        $adminRole->givePermissionTo(['create permission', 'view permission']);
-        $adminRole->givePermissionTo(['create user', 'view user', 'update user']);
-        $adminRole->givePermissionTo(['create task', 'view task', 'update task']);
+        $adminRole->givePermissionTo([
+            'create role', 'view role', 'update role',
+            'create permission', 'view permission',
+            'create user', 'view user', 'update user',
+            'create task', 'view task', 'update task'
+        ]);
 
-
-        // Let's Create User and assign Role to it.
-
+        // Create Users and assign Roles
         $superAdminUser = User::firstOrCreate([
-                    'email' => 'superadmin@gmail.com',
-                ], [
-                    'first_name' => 'Super',
-                    'last_name' => 'Admin',
-                    'username' => 'superadmin',
-                    'email' => 'superadmin@gmail.com',
-                    'password' => Hash::make ('87654321'),
-                ]);
+            'email' => 'superadmin@gmail.com',
+        ], [
+            'first_name' => 'Super',
+            'last_name' => 'Admin',
+            'username' => 'superadmin',
+            'email' => 'superadmin@gmail.com',
+            'password' => Hash::make('87654321'),
+        ]);
 
         $superAdminUser->assignRole($superAdminRole);
 
-
         $adminUser = User::firstOrCreate([
-                            'email' => 'student@gmail.com'
-                        ], [
-                            'first_name' => 'Student',
-                            'last_name' => 'User',
-                            'username' => 'student',
-                            'email' => 'student@gmail.com',
-                            'password' => Hash::make ('87654321'),
-                        ]);
+            'email' => 'student@gmail.com',
+        ], [
+            'first_name' => 'Student',
+            'last_name' => 'User',
+            'username' => 'student',
+            'email' => 'student@gmail.com',
+            'password' => Hash::make('87654321'),
+        ]);
 
         $adminUser->assignRole($adminRole);
 
-
         $mentorUser = User::firstOrCreate([
-                            'email' => 'mentor@gmail.com',
-                        ], [
-                            'first_name' => 'Mentor',
-                            'last_name' => 'User',
-                            'username' => 'mentor',
-                            'email' => '@gmail.com',
-                            'password' => Hash::make('87654321'),
-                        ]);
+            'email' => 'mentor@gmail.com',
+        ], [
+            'first_name' => 'Mentor',
+            'last_name' => 'User',
+            'username' => 'mentor',
+            'email' => 'mentor@gmail.com',
+            'password' => Hash::make('87654321'),
+        ]);
 
         $mentorUser->assignRole($mentorRole);
     }
 }
+

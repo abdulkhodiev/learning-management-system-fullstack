@@ -8,7 +8,7 @@ import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist"
 import Layout from "@/Layouts/Layout.vue"
 
 createInertiaApp({
-  title: title => `LMS - ${title}`,
+  title: title => `LMS`,
   resolve: name => {
     const pages = import.meta.glob("./Pages/**/*.vue", { eager: true })
     const page = pages[`./Pages/${name}.vue`] as DefineComponent

@@ -14,7 +14,7 @@ class EditRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'unique:role,name,' . $this->route('role')->id, 'string', 'max:255'],
+            'name' => ['required', 'string', 'unique:roles,name,' . $this->route('role')->id, 'string', 'max:255'],
             'permissions'=>['required', 'array'],
         ];
     }

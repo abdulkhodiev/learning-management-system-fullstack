@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\User\GetAllUsersWithRolesAction;
 use App\Actions\Role\GetAllRolesAction;
 use App\Actions\User\CreateUserAction;
 use App\Actions\User\DestroyUserAction;
@@ -14,33 +15,35 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(GetAllUsersWithRolesAction $action)
     {
+        $users = $action->execute();
         return Inertia::render('Users/Index', [
-            'users' => User::with('roles')->get(),
+            'users' => $users
         ]);
     }
 
-    public function create()
+    public function create(GetAllRolesAction $roles)
     {
-        $roles = (new GetAllRolesAction())->execute();
-        return Inertia::render('Users/Create', [
+        $roles = $roles->execute();
+        return Inertia::render('Users/CreateEdit', [
             'roles' => $roles
         ]);
     }
 
     public function store(CreateUserRequest $request, CreateUserAction $action)
     {
-        $action->execute($request->validated(), $request->roles);
-        return redirect()->route('users')->with('success', 'User created successfully.');
+
+        $action->execute($request->validated(), $request->role);
+
+        return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
-
-    public function edit(User $user)
+    public function edit(User $user, UserWithRolesAction $userAction, GetAllRolesAction $rolesAction)
     {
-        $user = (new UserWithRolesAction())->execute($user);
-        $roles = (new GetAllRolesAction())->execute();
+        $user = $userAction->execute($user);
+        $roles = $rolesAction->execute();
 
-        return Inertia::render('Users/Edit', [
+        return Inertia::render('Users/CreateEdit', [
             'user' => $user,
             'roles' => $roles
         ]);
@@ -48,13 +51,14 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, User $user, UpdateUserAction $action)
     {
-        $action->execute($user, $request->validated(), $request->roles);
-        return redirect()->route('users')->with('success', 'User updated successfully.');
+
+        $action->execute($user, $request->validated(), $request->role);
+        return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
     public function destroy(User $user, DestroyUserAction $action)
     {
         $action->execute($user);
-        return redirect()->route('users')->with('success', 'User deleted successfully.');
+        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
 }

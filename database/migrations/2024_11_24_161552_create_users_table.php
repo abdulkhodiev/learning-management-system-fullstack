@@ -19,13 +19,13 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->string('role')->default('student');
-            $table->string('image')->nullable();
+            $table->string('image', 500)->nullable(); // Increased length
             $table->string('language')->default('en');
-            $table->string('description')->nullable();
-            $table->string('youtube')->nullable();
+            $table->text('description')->nullable(); // Changed to `text`
+            $table->string('youtube', 500)->nullable(); // Increased length
             $table->string('x')->nullable();
-            $table->string('website')->nullable();
-            $table->string('linkedin')->nullable();
+            $table->string('website', 500)->nullable(); // Increased length
+            $table->string('linkedin', 500)->nullable(); // Increased length
             $table->timestamps();
         });
     }

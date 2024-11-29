@@ -1,15 +1,5 @@
 <script setup lang="ts">
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-
 import { Collapsible } from "@/components/ui/collapsible"
 import {
   DropdownMenu,
@@ -41,7 +31,6 @@ import {
   BadgeCheck,
   Bell,
   Book,
-  ChevronsUpDown,
   CircleDollarSign,
   CircleGauge,
   Command,
@@ -53,6 +42,7 @@ import {
   ShieldPlus,
   Sparkles,
   UserRoundCog,
+  UsersIcon,
 } from "lucide-vue-next"
 import { ref } from "vue"
 
@@ -82,7 +72,7 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: CircleGauge,
       isActive: true,
     },
@@ -107,13 +97,18 @@ const data = {
       icon: Settings,
     },
     {
+      title: "Users",
+      url: "/users",
+      icon: UsersIcon,
+    },
+    {
       title: "Roles",
-      url: "#",
+      url: "/roles",
       icon: UserRoundCog,
     },
     {
       title: "Permissions",
-      url: "#",
+      url: "/permissions",
       icon: ShieldPlus,
     },
   ],
@@ -124,6 +119,13 @@ const activeTeam = ref(data.teams[0])
 function setActiveTeam(team: (typeof data.teams)[number]) {
   activeTeam.value = team
 }
+
+import { router, usePage } from "@inertiajs/vue3"
+
+const { url } = usePage()
+const pathname = url
+
+const active = "text-primary"
 </script>
 
 <template>
@@ -159,7 +161,11 @@ function setActiveTeam(team: (typeof data.teams)[number]) {
               :default-open="item.isActive"
               class="group/collapsible"
             >
-              <SidebarMenuItem class="hover:text-primary">
+              <SidebarMenuItem
+                class="hover:text-primary"
+                @click="router.get(item.url)"
+                :class="pathname.includes(item.url) ? active : ''"
+              >
                 <SidebarMenuButton :tooltip="item.title">
                   <div>
                     <component :is="item.icon" class="size-5" />

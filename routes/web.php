@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
-use App\Models\Role;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::resource("permissions",App\Http\Controllers\PermissionController::class);
 
 
 
@@ -17,7 +17,9 @@ Route::middleware('guest')->group(function (): void {
 
 
 Route::middleware('auth')->group(function (): void {
-    Route::get('/roles', [RoleController::class, 'index'])->name('roles');
+   Route::resource('roles', RoleController::class);
+   Route::resource('permissions', PermissionController::class);
+   Route::resource('users', UserController::class);
 });
 
 

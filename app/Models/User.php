@@ -35,8 +35,6 @@ class User extends Authenticatable
         return $this->hasMany(Course::class);
     }
 
-
-
     public function courseReview(){
         return $this->hasMany(CourseReview::class);
     }

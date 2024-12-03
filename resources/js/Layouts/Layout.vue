@@ -36,6 +36,7 @@ import {
   Command,
   CreditCard,
   GalleryVerticalEnd,
+  LayoutList,
   LogOut,
   Mails,
   Settings,
@@ -78,8 +79,13 @@ const data = {
     },
     {
       title: "Courses",
-      url: "#",
+      url: "/courses",
       icon: Book,
+    },
+    {
+      title: "Categories",
+      url: "/categories",
+      icon: LayoutList,
     },
     {
       title: "Communication",

@@ -67,7 +67,10 @@ const handleSubmit = () => {
               id="first_name"
               placeholder="John"
             />
-            <FormMessage v-if="userForm.errors.first_name" class="mt-1">
+            <FormMessage
+              v-if="userForm.errors.first_name"
+              class="mt-1 text-sm text-red-500"
+            >
               {{ userForm.errors.first_name }}
             </FormMessage>
           </div>
@@ -78,9 +81,12 @@ const handleSubmit = () => {
               id="last_name"
               placeholder="Doe"
             />
-            <FormMessage v-if="userForm.errors.last_name" class="mt-1">
+            <p
+              v-if="userForm.errors.last_name"
+              class="mt-1 text-sm text-red-500"
+            >
               {{ userForm.errors.last_name }}
-            </FormMessage>
+            </p>
           </div>
         </div>
         <div class="flex w-full flex-col gap-4 md:flex-row">
@@ -92,9 +98,9 @@ const handleSubmit = () => {
               type="email"
               placeholder="m@example.com"
             />
-            <FormMessage v-if="userForm.errors.email" class="mt-1">
+            <p v-if="userForm.errors.email" class="mt-1 text-sm text-red-500">
               {{ userForm.errors.email }}
-            </FormMessage>
+            </p>
           </div>
           <div class="w-full space-y-2">
             <Label for="username">Username</Label>
@@ -103,9 +109,12 @@ const handleSubmit = () => {
               id="username"
               placeholder="johndoe"
             />
-            <FormMessage v-if="userForm.errors.username" class="mt-1">
+            <p
+              v-if="userForm.errors.username"
+              class="mt-1 text-sm text-red-500"
+            >
               {{ userForm.errors.username }}
-            </FormMessage>
+            </p>
           </div>
         </div>
 
@@ -117,9 +126,9 @@ const handleSubmit = () => {
             type="password"
             placeholder="********"
           />
-          <FormMessage v-if="userForm.errors.password" class="mt-1">
+          <p v-if="userForm.errors.password" class="mt-1 text-sm text-red-500">
             {{ userForm.errors.password }}
-          </FormMessage>
+          </p>
         </div>
       </div>
 
@@ -143,9 +152,9 @@ const handleSubmit = () => {
             </SelectContent>
           </Select>
         </div>
-        <FormMessage v-if="userForm.errors.role" class="mt-1">
+        <p v-if="userForm.errors.role" class="mt-1 text-sm text-red-500">
           {{ userForm.errors.role }}
-        </FormMessage>
+        </p>
       </div>
 
       <div class="flex justify-end">

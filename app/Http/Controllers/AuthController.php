@@ -38,7 +38,7 @@ class AuthController extends Controller
         $credentials = $request->validated();
 
         if ($this->loginAction->execute($credentials )) {
-            return redirect()->route('roles');
+            return redirect()->route('/roles');
         }
 
         return back()->withErrors([

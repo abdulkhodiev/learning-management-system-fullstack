@@ -5,6 +5,7 @@ import { Category } from "@/types/Models/category"
 import { router, useForm } from "@inertiajs/vue3"
 import { ArrowLeft } from "lucide-vue-next"
 import { computed } from "vue"
+import { toast } from "vue-sonner"
 
 const props = defineProps<{
   category?: Category
@@ -23,23 +24,27 @@ const previewImage = computed(() => {
 
 const handleSubmit = () => {
   if (props.category) {
-    const formData = {
-      name: categoryForm.name,
-      icon: categoryForm.icon,
-    }
-    console.log(categoryForm)
-    router.post(`/categories/${props.category?.id}`, {
-      _method: "put",
-      name: categoryForm.name,
-      icon: categoryForm.icon,
+    router.visit(`/categories/${props.category?.id}`, {
+      method: "post",
+      data: {
+        _method: "put",
+        name: categoryForm.name,
+        icon: categoryForm.icon,
+      },
+      onSuccess: () => {
+        toast.success("Category updated successfully")
+      },
+      onError: () => {
+        toast.error("Something went wrong. Please try again later!")
+      },
     })
   } else {
     categoryForm.post("/categories", {
       onSuccess: () => {
-        alert("Category created successfully")
+        toast.success("Category created successfully")
       },
       onError: () => {
-        alert("Category created unsuccessfully")
+        toast.error("Something went wrong. Please try again later!")
       },
     })
   }

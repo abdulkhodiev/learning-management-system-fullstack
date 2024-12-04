@@ -16,6 +16,12 @@ use Spatie\Permission\Models\Role;
 class RoleController extends Controller
 {
 
+    /**
+     * Show all roles with their permissions.
+     *
+     * @param GetAllRolesWithPermissionsAction $action
+     * @return \Inertia\Response
+     */
     public function index(GetAllRolesWithPermissionsAction $action)
     {
         $roles = $action->execute();
@@ -25,6 +31,12 @@ class RoleController extends Controller
         ]);
     }
 
+    /**
+     * Show the form for creating a new role, including available permissions.
+     *
+     * @param GetAllPermissionsAction $action
+     * @return \Inertia\Response
+     */
     public function create(GetAllPermissionsAction $action)
     {
         $permissions = $action->execute();
@@ -34,6 +46,14 @@ class RoleController extends Controller
     }
 
 
+
+    /**
+     * Create a new role, including its permissions.
+     *
+     * @param CreateRoleRequest $request
+     * @param CreateRoleAction $action
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(CreateRoleRequest $request, CreateRoleAction $action)
     {
         $action->execute($request->validated());
@@ -41,6 +61,14 @@ class RoleController extends Controller
     }
 
 
+    /**
+     * Show the form for editing a role, including its current permissions and available permissions.
+     *
+     * @param Role $role
+     * @param GetRoleWithPermissionsAction $roleGetWithPermissions
+     * @param GetAllPermissionsAction $permissions
+     * @return \Inertia\Response
+     */
     public function edit(Role $role, GetRoleWithPermissionsAction $roleGetWithPermissions, GetAllPermissionsAction $permissions)
     {
         $role = $roleGetWithPermissions->execute($role);
@@ -52,6 +80,14 @@ class RoleController extends Controller
     }
 
 
+    /**
+     * Update the specified role with new data and permissions.
+     *
+     * @param EditRoleRequest $request
+     * @param Role $role
+     * @param UpdateRoleAction $action
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(EditRoleRequest $request, Role $role, UpdateRoleAction $action)
     {
         $action->execute($role, $request->validated());
@@ -59,6 +95,13 @@ class RoleController extends Controller
     }
 
 
+    /**
+     * Remove the specified role from storage.
+     *
+     * @param Role $role
+     * @param DestroyRoleAction $action
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy(Role $role, DestroyRoleAction $action)
     {
         $action->execute($role);

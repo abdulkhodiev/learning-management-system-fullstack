@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select"
+import Textarea from "@/components/ui/textarea/Textarea.vue"
 
 const props = defineProps<{
   user?: User
@@ -26,7 +27,9 @@ const userForm = useForm({
   email: props.user?.email || undefined,
   username: props.user?.username || undefined,
   password: undefined,
-  role: props.user?.role.name || undefined,
+  role: props.user?.role?.name || undefined,
+  fields: props.user?.mentor?.fields || undefined,
+  experience: props.user?.mentor?.experience || undefined,
 })
 
 const handleSubmit = () => {
@@ -156,9 +159,43 @@ const handleSubmit = () => {
           {{ userForm.errors.role }}
         </p>
       </div>
+      <div
+        v-if="userForm.role === 'mentor'"
+        class="space-y-4 rounded-lg bg-white p-5"
+      >
+        <h3>Mentor Details</h3>
+        <div class="w-full space-y-2">
+          <Label for="fields">Fields</Label>
+          <Textarea
+            v-model="userForm.fields"
+            id="fields"
+            placeholder="Science, Math, etc."
+          />
+          <p v-if="userForm.errors.fields" class="mt-1 text-sm text-red-500">
+            {{ userForm.errors.fields }}
+          </p>
+        </div>
+        <div class="w-full space-y-2">
+          <Label for="experience">Experience</Label>
+          <Textarea
+            v-model="userForm.experience"
+            id="experience"
+            placeholder="5 years teaching"
+          />
+          <p
+            v-if="userForm.errors.experience"
+            class="mt-1 text-sm text-red-500"
+          >
+            {{ userForm.errors.experience }}
+          </p>
+        </div>
+      </div>
 
       <div class="flex justify-end">
-        <Button type="submit">Save</Button>
+        <Button type="submit" :disabled="userForm.processing">
+          <span v-if="userForm.processing">Saving...</span>
+          <span v-else>Save</span>
+        </Button>
       </div>
     </form>
   </div>

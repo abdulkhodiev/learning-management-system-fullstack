@@ -46,6 +46,7 @@ import {
   UsersIcon,
 } from "lucide-vue-next"
 import { ref } from "vue"
+import { Toaster } from "@/components/ui/sonner"
 
 const data = {
   user: {
@@ -280,6 +281,7 @@ const active = "text-primary"
       </header>
       <div class="flex flex-1 flex-col gap-4 p-4">
         <slot />
+        <Toaster position="top-center" :rich-colors="true" />
       </div>
     </SidebarInset>
   </SidebarProvider>

@@ -1,28 +1,36 @@
 <script setup lang="ts">
 import { Button } from "@/components/ui/button"
 import { Category } from "@/types/Models/category"
-import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Link, router } from "@inertiajs/vue3"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { toast } from "vue-sonner"
 
 defineProps<{ categories: Category[] }>()
 
-// Function to handle navigation to the edit page
 const handleEdit = (id: number) => {
   router.get(`/categories/${id}/edit`)
 }
 
-// Function to handle deletion
 const handleDelete = (id: number) => {
-  if (confirm("Are you sure you want to delete this category?")) {
-    router.delete(`/categories/${id}`, {
-      onSuccess: () => {
-        alert("Category deleted successfully!")
-      },
-      onError: () => {
-        alert("Failed to delete the category.")
-      },
-    })
-  }
+  router.delete(`/categories/${id}`, {
+    onSuccess: () => {
+      toast.success("Category deleted successfully")
+    },
+    onError: () => {
+      toast.error("Something went wrong. Please try again later!")
+    },
+  })
 }
 </script>
 
@@ -36,12 +44,10 @@ const handleDelete = (id: number) => {
       </Button>
     </div>
 
-    <!-- No Categories Message -->
     <div v-if="categories.length === 0">
       <p class="rounded-lg bg-white p-4">No Categories found</p>
     </div>
 
-    <!-- Category Cards -->
     <div
       v-else
       class="grid justify-between gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
@@ -49,26 +55,48 @@ const handleDelete = (id: number) => {
       <Card
         v-for="category in categories"
         :key="category.id"
-        class="cursor-pointer"
+        class="flex cursor-pointer flex-col justify-between p-0"
       >
-        <CardHeader>
+        <CardHeader class="p-2 pb-0">
           <img
-            :src="`../../../../` + `storage/${category.icon}`"
+            :src="category.icon"
             alt="icon"
-            class="h-32 w-full rounded-lg object-cover"
+            class="h-32 w-full rounded-lg object-contain"
           />
-          <p>{{ category.icon }}</p>
 
-          <CardTitle>{{ category.name }}</CardTitle>
+          <CardTitle class="text-lg">{{ category.name }}</CardTitle>
         </CardHeader>
-        <div class="flex justify-between p-4">
-          <Button @click="handleEdit(category.id)" variant="outline"
+        <CardFooter class="flex justify-between gap-2 p-2">
+          <Button
+            @click="handleEdit(category.id)"
+            variant="outline"
+            class="w-full"
             >Edit</Button
           >
-          <Button @click="handleDelete(category.id)" variant="destructive"
-            >Delete</Button
-          >
-        </div>
+
+          <AlertDialog class="w-full">
+            <AlertDialogTrigger as-child class="w-full">
+              <Button variant="destructive" class="w-full">Delete</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  this category and remove data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  class="bg-destructive"
+                  @click="handleDelete(category.id)"
+                  >Delete</AlertDialogAction
+                >
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </CardFooter>
       </Card>
     </div>
   </div>

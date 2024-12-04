@@ -6,11 +6,21 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
 {
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool Always true, since anyone can register.
+     */
     public function authorize()
     {
         return true;
     }
 
+    /**
+     * Get the validation rules for the registration request.
+     *
+     * @return array<string, array<string|int>> Validation rules for registration fields.
+     */
     public function rules()
     {
         return [

@@ -7,6 +7,11 @@ export interface User {
   username: string
   email: string
   role: Role
+  mentor?: {
+    user_id: number
+    fields: string
+    experience: string
+  }
   created_at: string
   updated_at: string
 }

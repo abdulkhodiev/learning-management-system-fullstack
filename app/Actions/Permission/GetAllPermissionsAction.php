@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 class GetAllPermissionsAction
 {
+    /**
+     * Retrieves all permissions.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission>
+     */
     public function execute(): Collection
     {
         return Permission::all();

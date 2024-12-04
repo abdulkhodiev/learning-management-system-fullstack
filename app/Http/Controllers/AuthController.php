@@ -17,6 +17,13 @@ class AuthController extends Controller
     protected $logoutAction;
     protected $registerAction;
 
+    /**
+     * The controller constructor.
+     *
+     * @param LoginAction $loginAction
+     * @param LogoutAction $logoutAction
+     * @param RegisterAction $registerAction
+     */
     public function __construct(
         LoginAction $loginAction,
         LogoutAction $logoutAction,
@@ -33,6 +40,13 @@ class AuthController extends Controller
         return inertia('Auth/Login');
     }
 
+    /**
+     * Handle an authentication attempt.
+     *
+     * @param LoginRequest $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
@@ -60,6 +74,13 @@ class AuthController extends Controller
         return inertia('Auth/Register');
     }
 
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param RegisterRequest $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function register(RegisterRequest $request)
     {
         $validated = $request->validated();

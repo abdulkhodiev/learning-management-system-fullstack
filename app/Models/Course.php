@@ -13,32 +13,66 @@ class Course extends Model
         'title',
         'description',
         'price',
+        'languages',
         'category_id',
         'mentor_id',
         'image',
     ];
 
+    /**
+     * Automatically cast the 'languages' field to and from JSON.
+     */
+    protected $casts = [
+        'languages' => 'array',
+    ];
+
+    /**
+     * Get the category that owns the course.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
+    /**
+     * Get the mentor that owns the course.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function mentor()
     {
         return $this->belongsTo(Mentor::class);
     }
 
+    /**
+     * Get all the coupons for the course.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function coupon()
     {
-        return $this->hasMany(related: Coupon::class);
+        return $this->hasMany(Coupon::class);
     }
 
+    /**
+     * Get all the chapters for the course.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function chapters()
     {
         return $this->hasMany(CourseChapter::class);
     }
 
-    public function courseReview(){
+    /**
+     * Get all the reviews for the course.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function courseReview()
+    {
         return $this->hasMany(CourseReview::class);
     }
 }

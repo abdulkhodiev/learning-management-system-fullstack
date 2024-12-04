@@ -22,9 +22,14 @@ class CreateCourseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'description' => 'required',
-            'image' => 'required',
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:255'],
+            'category_id' => ['required', 'numeric'],
+            'mentor_id' => [ 'numeric'],
+            'price' => ['required', 'numeric'],
+            'languages'=> ['array', 'required', 'min:1'],
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+
         ];
     }
 }

@@ -17,14 +17,11 @@ class UpdateCategoryAction
      */
     public function execute(Category $category, array $data): Category
     {
-        // Check if 'icon' exists and is a valid uploaded file
         if (isset($data['icon']) && $data['icon'] instanceof UploadedFile && $data['icon']->isValid()) {
-            // Delete the old icon if it exists
             if ($category->icon) {
                 Storage::disk('public')->delete($category->icon);
             }
 
-            // Store the new icon
             $filePath = $data['icon']->storeAs(
                 'categories/' . now()->format('Y/m/d'),
                 uniqid() . '.' . $data['icon']->getClientOriginalExtension(),
@@ -32,7 +29,7 @@ class UpdateCategoryAction
             );
 
             // Set the new file path in data
-            $data['icon'] = $filePath;
+            $data['icon'] = Storage::url($filePath);
         }
 
         // Update the category with the remaining data

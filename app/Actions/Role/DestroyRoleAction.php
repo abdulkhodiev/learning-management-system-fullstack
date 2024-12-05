@@ -6,10 +6,10 @@ use Spatie\Permission\Models\Role;
 
 class DestroyRoleAction
 {
+
     /**
-     * Deletes a role.
-     *
-     * @param Role $role The role to be deleted.
+     * @param Role $role
+     * @return void
      */
     public function execute(Role $role): void
     {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useForm } from "@inertiajs/vue3"
+import { router, useForm } from "@inertiajs/vue3"
 import Button from "@/components/ui/button/Button.vue"
 import { Input } from "@/components/ui/input"
 import { Category } from "@/types/Models/category"
@@ -21,19 +21,21 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import Textarea from "@/components/ui/textarea/Textarea.vue"
+import { ArrowLeft } from "lucide-vue-next"
+import { Course } from "@/types/Models/course"
 
 const props = defineProps<{
   categories: Category[]
+  course?: Course
 }>()
 
 const courseForm = useForm({
-  title: undefined,
-  description: undefined,
+  title: props.course?.title || undefined,
+  description: props.course?.description || undefined,
   image: undefined as File | undefined,
-  category_id: undefined,
-  price: undefined,
-  languages: [] as string[],
-  _method: "POST",
+  category_id: props.course?.category_id.toString() || undefined,
+  price: props.course?.price || undefined,
+  languages: props.course?.languages || [],
 })
 
 const selectedImage = ref<File | null>(null)
@@ -41,7 +43,7 @@ const selectedImage = ref<File | null>(null)
 const previewImage = computed(() => {
   return selectedImage.value
     ? URL.createObjectURL(selectedImage.value)
-    : undefined
+    : props.course?.image || ""
 })
 
 const handleFileChange = (event: Event) => {
@@ -53,17 +55,37 @@ const handleFileChange = (event: Event) => {
 }
 
 const handleSubmit = () => {
-  courseForm.post("/courses", {
-    onSuccess: () => {
-      toast.success("Course created successfully")
-      // Reset file input and preview
-      selectedImage.value = null
-    },
-    onError: error => {
-      console.error(error)
-      toast.error("Something went wrong. Please try again later!")
-    },
-  })
+  if (props.course) {
+    router.visit(`/courses/${props.course?.id}`, {
+      method: "post",
+      data: {
+        _method: "put",
+        title: courseForm.title,
+        description: courseForm.description,
+        image: courseForm.image,
+        category_id: courseForm.category_id,
+        price: courseForm.price,
+        languages: courseForm.languages,
+      },
+      onSuccess: () => {
+        toast.success("Course updated successfully")
+      },
+      onError: () => {
+        toast.error("Something went wrong. Please try again later!")
+      },
+    })
+  } else {
+    courseForm.post("/courses", {
+      onSuccess: () => {
+        toast.success("Course created successfully")
+        selectedImage.value = null
+      },
+      onError: error => {
+        console.error(error)
+        toast.error("Something went wrong. Please try again later!")
+      },
+    })
+  }
 }
 </script>
 
@@ -72,7 +94,7 @@ const handleSubmit = () => {
     <div class="flex items-center justify-between gap-4">
       <h1>Course Create</h1>
       <Button as-child>
-        <Link href="/courses"> Back </Link>
+        <Link href="/courses"> Back <ArrowLeft /></Link>
       </Button>
     </div>
     <div class="rounded-lg bg-white p-4">
@@ -102,7 +124,10 @@ const handleSubmit = () => {
             @change="handleFileChange"
             class="hidden"
           />
-          <p v-if="courseForm.errors.image" class="mt-2 text-sm text-red-600">
+          <p
+            v-if="courseForm.errors.image"
+            class="mt-2 text-center text-sm text-red-600"
+          >
             {{ courseForm.errors.image }}
           </p>
         </div>
@@ -226,7 +251,14 @@ const handleSubmit = () => {
         </div>
 
         <div class="flex justify-end">
-          <Button type="submit">Save</Button>
+          <Button
+            type="submit"
+            class="mt-4"
+            :class="{ 'opacity-25': courseForm.processing }"
+            :disabled="courseForm.processing"
+          >
+            {{ course ? "Update Course" : "Create Course" }}
+          </Button>
         </div>
       </form>
     </div>

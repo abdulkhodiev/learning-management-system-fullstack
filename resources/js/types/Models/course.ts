@@ -6,6 +6,7 @@ export interface Course {
   category_id: number
   mentor_id: number
   price: number
+  languages: string[]
   created_at: string
   updated_at: string
 }

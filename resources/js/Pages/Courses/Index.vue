@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-  CardContent,
-} from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Link, router } from "@inertiajs/vue3"
 import {
   AlertDialog,
@@ -22,31 +16,29 @@ import {
 import { toast } from "vue-sonner"
 import { Course } from "@/types/Models/course"
 import Separator from "@/components/ui/separator/Separator.vue"
+import Badge from "@/components/ui/badge/Badge.vue"
+import { PenBox, Trash2Icon } from "lucide-vue-next"
 
 defineProps<{ courses: Course[] }>()
 
-// const handleEdit = (id: number) => {
-//   router.get(`/courses/${id}/edit`)
-// }
-
-// const handleDelete = (id: number) => {
-//   router.delete(`/courses/${id}`, {
-//     onSuccess: () => {
-//       toast.success("Category deleted successfully")
-//     },
-//     onError: () => {
-//       toast.error("Something went wrong. Please try again later!")
-//     },
-//   })
-// }
+const handleDelete = (id: number) => {
+  router.delete(`/courses/${id}`, {
+    onSuccess: () => {
+      toast.success("Course has been deleted successfully")
+    },
+    onError: () => {
+      toast.error("Something went wrong. Please try again later!")
+    },
+  })
+}
 </script>
 
 <template>
-  <div class="space-y-4">
+  <div class="space-y-8">
     <div class="flex items-center justify-between">
       <h1>Courses</h1>
       <Button as-child>
-        <Link href="/courses/create"> Create Course </Link>
+        <Link href="/courses/create"> Add Course </Link>
       </Button>
     </div>
 
@@ -55,42 +47,83 @@ defineProps<{ courses: Course[] }>()
     </div>
 
     <div
-      class="grid justify-between gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+      class="grid justify-between gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
     >
       <Card
-        v-for="category in courses"
-        :key="category.id"
-        class="flex cursor-pointer flex-col justify-between p-0"
+        v-for="course in courses"
+        :key="course.id"
+        class="flex cursor-pointer flex-col justify-between"
+        @click="router.get(`/courses/${course.id}/commissions`)"
       >
-        <CardHeader class="p-2 pb-0">
-          <CardTitle class="truncate text-lg">{{ category.title }}</CardTitle>
+        <CardHeader class="p-4 pb-2">
+          <div class="flex items-center justify-between gap-2">
+            <Badge
+              class="w-max rounded-lg border bg-secondary p-2 px-3 text-sm text-secondary-foreground"
+            >
+              Free</Badge
+            >
+            <div class="space-x-2">
+              <Button
+                variant="outline"
+                @click="router.get(`/courses/${course.id}/edit`)"
+                ><PenBox
+              /></Button>
+              <AlertDialog>
+                <AlertDialogTrigger as-child
+                  ><Button class="bg-destructive hover:bg-red-600"
+                    ><Trash2Icon /></Button
+                ></AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle
+                      >Are you absolutely sure?</AlertDialogTitle
+                    >
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      this course and remove your data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      class="bg-destructive hover:bg-red-600"
+                      @click="handleDelete(course.id)"
+                      >Delete</AlertDialogAction
+                    >
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          </div>
+          <CardTitle class="truncate text-lg">{{ course.title }}</CardTitle>
         </CardHeader>
-        <CardContent> </CardContent>
-        <Separator />
-        <CardFooter class="flex justify-between gap-2 p-2">
-          <AlertDialog class="w-full">
-            <AlertDialogTrigger as-child class="w-full">
-              <Button variant="destructive" class="w-full">Delete</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  this category and remove data from our servers.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  class="bg-destructive"
-                  @click="handleDelete(category.id)"
-                  >Delete</AlertDialogAction
-                >
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </CardFooter>
+        <Separator class="mx-auto w-[90%]" />
+        <CardContent class="grid grid-cols-3 gap-4 p-4 pt-2">
+          <div>
+            <h4 class="font-semibold">${{ course.price }}</h4>
+            <p class="text-sm">Price</p>
+          </div>
+          <div>
+            <h4 class="font-semibold">${{ course.price }}</h4>
+            <p class="text-sm">Chapters</p>
+          </div>
+          <div>
+            <h4 class="font-semibold">${{ course.price }}</h4>
+            <p class="text-sm">Orders</p>
+          </div>
+          <div>
+            <h4 class="font-semibold">${{ course.price }}</h4>
+            <p class="text-sm">Ceritificates</p>
+          </div>
+          <div>
+            <h4 class="font-semibold">${{ course.price }}</h4>
+            <p class="text-sm">Reviews</p>
+          </div>
+          <div>
+            <h4 class="font-semibold">${{ course.price }}</h4>
+            <p class="text-sm">Add to Shelf</p>
+          </div>
+        </CardContent>
       </Card>
     </div>
   </div>

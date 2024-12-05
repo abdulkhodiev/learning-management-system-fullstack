@@ -11,7 +11,6 @@ use App\Actions\User\CreateUserAction;
 use App\Actions\User\DestroyUserAction;
 use App\Actions\User\UpdateUserAction;
 use App\Actions\User\UserWithRolesAction;
-use App\Http\Requests\Mentor\CreateMentorRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
@@ -19,12 +18,11 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-/**
- * Display a listing of users along with their roles.
- *
- * @param GetAllUsersWithRolesAction $action
- * @return \Inertia\Response
- */
+
+    /**
+     * @param GetAllUsersWithRolesAction $action
+     * @return \Inertia\Response
+     */
     public function index(GetAllUsersWithRolesAction $action)
     {
         $users = $action->execute();
@@ -35,8 +33,6 @@ class UserController extends Controller
 
 
     /**
-     * Display a form for creating a new user.
-     *
      * @param GetAllRolesAction $roles
      * @return \Inertia\Response
      */
@@ -48,6 +44,12 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * @param CreateUserRequest $request
+     * @param CreateUserAction $action
+     * @param CreateMentorAction $mentorAction
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(CreateUserRequest $request, CreateUserAction $action, CreateMentorAction $mentorAction)
     {
         \DB::transaction(function () use ($request, $action, $mentorAction) {
@@ -68,6 +70,12 @@ class UserController extends Controller
     }
 
 
+    /**
+     * @param User $user
+     * @param UserWithRolesAction $userAction
+     * @param GetAllRolesAction $rolesAction
+     * @return \Inertia\Response
+     */
     public function edit(User $user, UserWithRolesAction $userAction, GetAllRolesAction $rolesAction)
     {
         $user = $userAction->execute($user);
@@ -86,29 +94,12 @@ class UserController extends Controller
     }
 
 
-
     /**
-     * Update the specified user with new data and role.
-     *
-     * The given $request array is expected to have the following keys:
-     * - first_name
-     * - last_name
-     * - email
-     * - username
-     * - password (optional)
-     * - role
-     * - fields
-     * - experience
-     *
-     * If the password is not provided, it will be left unchanged.
-     *
-     * If the user is a mentor, update or create mentor-specific data.
-     * If the user is no longer a mentor, delete the mentor record.
-     *
      * @param UpdateUserRequest $request
      * @param User $user
-     * @param UpdateUserAction $action
-     * @param CreateMentorAction $mentorAction
+     * @param UpdateUserAction $userAction
+     * @param UpdateMentorAction $updateMentorAction
+     * @param DestroyMentorAction $destroyMentorAction
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(
@@ -147,7 +138,12 @@ class UserController extends Controller
     }
 
 
-
+    /**
+     * @param User $user
+     * @param DestroyUserAction $userAction
+     * @param DestroyMentorAction $destroyMentorAction
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy(User $user, DestroyUserAction $userAction, DestroyMentorAction $destroyMentorAction)
     {
         \DB::transaction(function () use ($user, $userAction, $destroyMentorAction) {

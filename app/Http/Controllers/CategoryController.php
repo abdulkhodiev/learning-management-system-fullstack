@@ -15,9 +15,8 @@ use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
+
     /**
-     * Show the categories page.
-     *
      * @param GetAllCategoriesAction $action
      * @return \Inertia\Response
      */
@@ -27,9 +26,8 @@ class CategoryController extends Controller
         return Inertia::render('Category/Index', ['categories' => $categories]);
     }
 
+
     /**
-     * Show the form for creating a new category.
-     *
      * @return \Inertia\Response
      */
     public function create()
@@ -39,10 +37,8 @@ class CategoryController extends Controller
 
 
     /**
-     * Store a newly created category in storage.
-     *
-     * @param  \App\Http\Requests\Category\CreateCategoryRequest  $request
-     * @param  \App\Actions\Category\CreateCategoryAction  $action
+     * @param CreateCategoryRequest $request
+     * @param CreateCategoryAction $action
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CreateCategoryRequest $request, CreateCategoryAction $action)
@@ -51,11 +47,10 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')->with('message', 'Category created successfully.');
     }
 
+
     /**
-     * Show the form for editing the specified category.
-     *
-     * @param  \App\Models\Category  $category
-     * @param  \App\Actions\Category\GetCategoryWithCoursesAction  $action
+     * @param Category $category
+     * @param GetCategoryWithCoursesAction $action
      * @return \Inertia\Response
      */
     public function edit(Category $category, GetCategoryWithCoursesAction $action)
@@ -67,11 +62,9 @@ class CategoryController extends Controller
 
 
     /**
-     * Update the specified category in storage.
-     *
-     * @param  \App\Http\Requests\Category\UpdateCategoryRequest  $request
-     * @param  \App\Models\Category  $category
-     * @param  \App\Actions\Category\UpdateCategoryAction  $action
+     * @param UpdateCategoryRequest $request
+     * @param Category $category
+     * @param UpdateCategoryAction $action
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateCategoryRequest $request, Category $category, UpdateCategoryAction $action)
@@ -82,11 +75,10 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 
+
     /**
-     * Remove the specified category from storage.
-     *
-     * @param  \App\Models\Category  $category
-     * @param  \App\Actions\Category\DetroyCategoryAction  $action
+     * @param Category $category
+     * @param DetroyCategoryAction $action
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Category $category, DetroyCategoryAction $action)

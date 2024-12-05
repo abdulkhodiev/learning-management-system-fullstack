@@ -13,13 +13,20 @@ use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
+    /**
+     * @var LoginAction
+     */
     protected $loginAction;
+    /**
+     * @var LogoutAction
+     */
     protected $logoutAction;
+    /**
+     * @var
+     */
     protected $registerAction;
 
     /**
-     * The controller constructor.
-     *
      * @param LoginAction $loginAction
      * @param LogoutAction $logoutAction
      * @param RegisterAction $registerAction
@@ -35,16 +42,18 @@ class AuthController extends Controller
     }
 
     // Login methods
+
+    /**
+     * @return \Inertia\Response|\Inertia\ResponseFactory
+     */
     public function showLoginForm()
     {
         return inertia('Auth/Login');
     }
 
+
     /**
-     * Handle an authentication attempt.
-     *
      * @param LoginRequest $request
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function login(LoginRequest $request)
@@ -60,7 +69,11 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
-    // Logout method
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function logout(Request $request)
     {
         $this->logoutAction->execute($request);
@@ -68,17 +81,18 @@ class AuthController extends Controller
         return redirect()->route('home');
     }
 
-    // Register methods
+
+    /**
+     * @return \Inertia\Response|\Inertia\ResponseFactory
+     */
     public function showRegisterForm()
     {
         return inertia('Auth/Register');
     }
 
+
     /**
-     * Handle a registration request for the application.
-     *
      * @param RegisterRequest $request
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function register(RegisterRequest $request)

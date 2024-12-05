@@ -6,10 +6,10 @@ use App\Models\User;
 
 class DestroyUserAction
 {
+
     /**
-     * Deletes a user.
-     *
-     * @param User $user The user to be deleted.
+     * @param User $user
+     * @return void
      */
     public function execute(User $user): void
     {

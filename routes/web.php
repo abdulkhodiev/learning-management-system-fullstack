@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseControllers\CourseCommissionController;
 use App\Http\Controllers\CourseControllers\CourseController;
+use App\Http\Controllers\CourseControllers\CourseReviewsController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -24,11 +25,14 @@ Route::middleware('auth')->group(function (): void {
 
    // Courses
    Route::resource('courses', CourseController::class);
-   // Courses -> Commissions
 
+   // Courses -> Commissions
    Route::get('/courses/{course}/commissions', [CourseCommissionController::class, 'index'])
    ->name('course.commissions.index');
 
+   // Courses -> Reviews
+    Route::get('/courses/{course}/reviews/', [CourseReviewsController::class, 'index'])
+    ->name('course.reviews.index');
 
 });
 

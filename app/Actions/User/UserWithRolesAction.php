@@ -18,6 +18,7 @@ class UserWithRolesAction
     {
         $user->load('roles');
         $user->role = $user->roles->first();
+
         return $user;
     }
 }

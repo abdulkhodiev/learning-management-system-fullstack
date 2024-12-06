@@ -14,6 +14,7 @@ class GetAllUsersWithRolesAction
     {
         return User::with('roles')->get()->map(function ($user) {
             $user->role = $user->roles->first();
+
             return $user;
         });
     }

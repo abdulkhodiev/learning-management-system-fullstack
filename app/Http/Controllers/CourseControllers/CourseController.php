@@ -13,6 +13,9 @@ use App\Http\Requests\Course\UpdateCourseRequest;
 use App\Models\Course;
 use Inertia\Inertia;
 
+use Inertia\Response;
+use Illuminate\Http\RedirectResponse;
+
 
 class CourseController extends Controller
 {
@@ -21,9 +24,10 @@ class CourseController extends Controller
      * @param GetAllCoursesAction $action
      * @return \Inertia\Response
      */
-    public function index(GetAllCoursesAction $action)
+    public function index(GetAllCoursesAction $action): Response
     {
         $courses = $action->execute();
+
         return Inertia::render('Courses/Index', ['courses' => $courses] );
     }
 
@@ -31,9 +35,10 @@ class CourseController extends Controller
      * @param GetAllCategoriesAction $categoryAction
      * @return \Inertia\Response
      */
-    public function create(GetAllCategoriesAction $categoryAction)
+    public function create(GetAllCategoriesAction $categoryAction): Response
     {
         $categories = $categoryAction->execute();
+
         return Inertia::render('Courses/CreateEdit', ['categories' => $categories]);
     }
 
@@ -44,10 +49,11 @@ class CourseController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function store(CreateCourseAction $action, CreateCourseRequest $request)
+    public function store(CreateCourseAction $action, CreateCourseRequest $request): RedirectResponse
     {
 
         $action->execute($request->validated());
+
         return redirect()->route('courses.index')->with('success', 'Course created successfully.');
     }
 
@@ -56,7 +62,7 @@ class CourseController extends Controller
      * @param Course $course
      * @return \Inertia\Response
      */
-    public function edit(GetAllCategoriesAction $action, Course $course)
+    public function edit(GetAllCategoriesAction $action, Course $course): Response
     {
         $categories = $action->execute();
 
@@ -69,10 +75,11 @@ class CourseController extends Controller
      * @param Course $course
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateCourseAction $action, UpdateCourseRequest $updateCourseRequest, Course $course)
+    public function update(UpdateCourseAction $action, UpdateCourseRequest $updateCourseRequest, Course $course): RedirectResponse
     {
 
         $action->execute($course, $updateCourseRequest->validated());
+
         return redirect()->route('courses.index')->with('success','Course updated successfully.');
     }
 
@@ -81,9 +88,10 @@ class CourseController extends Controller
      * @param Course $course
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(DestroyCourseAction $action, Course $course)
+    public function destroy(DestroyCourseAction $action, Course $course): RedirectResponse
     {
         $action->execute($course);
+
         return redirect()->route('courses.index')->with('success','Course deleted successfully.');
     }
 

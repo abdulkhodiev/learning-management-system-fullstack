@@ -31,10 +31,21 @@ class Course extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+
+
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
+
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'purchases', 'course_id', 'user_id')
+                    ->withPivot('price', 'purchased_at')
+                    ->withTimestamps();
+    }
+
 
     /**
      * Get the mentor that owns the course.

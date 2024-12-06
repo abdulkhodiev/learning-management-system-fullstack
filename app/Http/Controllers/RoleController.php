@@ -13,6 +13,9 @@ use App\Http\Requests\Role\EditRoleRequest;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 
+use Inertia\Response;
+use Illuminate\Http\RedirectResponse;
+
 class RoleController extends Controller
 {
 
@@ -22,7 +25,7 @@ class RoleController extends Controller
      * @param GetAllRolesWithPermissionsAction $action
      * @return \Inertia\Response
      */
-    public function index(GetAllRolesWithPermissionsAction $action)
+    public function index(GetAllRolesWithPermissionsAction $action): Response
     {
         $roles = $action->execute();
 
@@ -37,9 +40,10 @@ class RoleController extends Controller
      * @param GetAllPermissionsAction $action
      * @return \Inertia\Response
      */
-    public function create(GetAllPermissionsAction $action)
+    public function create(GetAllPermissionsAction $action): Response
     {
         $permissions = $action->execute();
+
         return Inertia::render('Roles/CreateEdit', [
             'permissions' => $permissions
         ]);
@@ -54,9 +58,10 @@ class RoleController extends Controller
      * @param CreateRoleAction $action
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateRoleRequest $request, CreateRoleAction $action)
+    public function store(CreateRoleRequest $request, CreateRoleAction $action): RedirectResponse
     {
         $action->execute($request->validated());
+
         return redirect()->route('roles.index')->with('message', 'Role created successfully.');
     }
 
@@ -69,10 +74,11 @@ class RoleController extends Controller
      * @param GetAllPermissionsAction $permissions
      * @return \Inertia\Response
      */
-    public function edit(Role $role, GetRoleWithPermissionsAction $roleGetWithPermissions, GetAllPermissionsAction $permissions)
+    public function edit(Role $role, GetRoleWithPermissionsAction $roleGetWithPermissions, GetAllPermissionsAction $permissions): Response
     {
         $role = $roleGetWithPermissions->execute($role);
         $permissions = $permissions->execute();
+
         return Inertia::render('Roles/CreateEdit', [
             'role' => $role,
             'permissions' => $permissions
@@ -88,9 +94,10 @@ class RoleController extends Controller
      * @param UpdateRoleAction $action
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(EditRoleRequest $request, Role $role, UpdateRoleAction $action)
+    public function update(EditRoleRequest $request, Role $role, UpdateRoleAction $action): RedirectResponse
     {
         $action->execute($role, $request->validated());
+
         return redirect()->route('roles.index')->with('message', 'Role updated successfully.');
     }
 
@@ -102,9 +109,10 @@ class RoleController extends Controller
      * @param DestroyRoleAction $action
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Role $role, DestroyRoleAction $action)
+    public function destroy(Role $role, DestroyRoleAction $action): RedirectResponse
     {
         $action->execute($role);
+
         return redirect()->route('roles')->with('success', 'Role deleted successfully.');
     }
 }

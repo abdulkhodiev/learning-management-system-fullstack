@@ -11,6 +11,9 @@ use App\Http\Requests\Permission\CreatePermissionRequest;
 use Spatie\Permission\Models\Permission;
 use Inertia\Inertia;
 
+use Inertia\Response;
+use Illuminate\Http\RedirectResponse;
+
 class PermissionController extends Controller
 {
 
@@ -20,9 +23,10 @@ class PermissionController extends Controller
      * @param  GetAllPermissionsAction  $action
      * @return \Inertia\Response
      */
-    public function index(GetAllPermissionsAction $action)
+    public function index(GetAllPermissionsAction $action): Response
     {
         $permissions = $action->execute();
+
         return Inertia::render('Permissions/Index', ['permissions' => $permissions]);
     }
 
@@ -32,7 +36,7 @@ class PermissionController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Permissions/Create');
     }
@@ -44,9 +48,10 @@ class PermissionController extends Controller
      * @param  \App\Actions\Permission\CreatePermissionAction  $action
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreatePermissionRequest $request, CreatePermissionAction $action)
+    public function store(CreatePermissionRequest $request, CreatePermissionAction $action): RedirectResponse
     {
         $permission = $action->execute($request->validated());
+
         return redirect()->route('permissions')->with('message', 'Permission created successfully.');
     }
 
@@ -69,7 +74,7 @@ class PermissionController extends Controller
      * @param  \App\Actions\Permission\UpdatePermissionAction  $action
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(EditPermissionRequest $request, Permission $permission, UpdatePermissionAction $action)
+    public function update(EditPermissionRequest $request, Permission $permission, UpdatePermissionAction $action): RedirectResponse
     {
         $updatedPermission = $action->execute($permission, $request->validated());
         return redirect()->route('permissions')->with('message', 'Permission updated successfully.');
@@ -82,9 +87,10 @@ class PermissionController extends Controller
      * @param  \App\Actions\Permission\DestroyPermissionAction  $action
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Permission $permission, DestroyPermissionAction $action)
+    public function destroy(Permission $permission, DestroyPermissionAction $action): RedirectResponse
     {
         $action->execute($permission);
+
         return redirect()->route('permissions')->with('message', 'Permission deleted successfully.');
     }
 }

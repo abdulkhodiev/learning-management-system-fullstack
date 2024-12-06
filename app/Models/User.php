@@ -26,6 +26,15 @@ class User extends Authenticatable
         'linkedin',
     ];
 
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'purchases', 'user_id', 'course_id')
+                    ->withPivot('price', 'purchased_at')
+                    ->withTimestamps();
+    }
+
+
+
     public function mentor()
     {
         return $this->hasOne(Mentor::class);

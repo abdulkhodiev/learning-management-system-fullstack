@@ -16,6 +16,9 @@ use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use Inertia\Inertia;
 
+use Inertia\Response;
+use Illuminate\Http\RedirectResponse;
+
 class UserController extends Controller
 {
 
@@ -23,9 +26,10 @@ class UserController extends Controller
      * @param GetAllUsersWithRolesAction $action
      * @return \Inertia\Response
      */
-    public function index(GetAllUsersWithRolesAction $action)
+    public function index(GetAllUsersWithRolesAction $action): Response
     {
         $users = $action->execute();
+
         return Inertia::render('Users/Index', [
             'users' => $users
         ]);
@@ -36,9 +40,10 @@ class UserController extends Controller
      * @param GetAllRolesAction $roles
      * @return \Inertia\Response
      */
-    public function create(GetAllRolesAction $roles)
+    public function create(GetAllRolesAction $roles): Response
     {
         $roles = $roles->execute();
+
         return Inertia::render('Users/CreateEdit', [
             'roles' => $roles
         ]);
@@ -50,7 +55,7 @@ class UserController extends Controller
      * @param CreateMentorAction $mentorAction
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateUserRequest $request, CreateUserAction $action, CreateMentorAction $mentorAction)
+    public function store(CreateUserRequest $request, CreateUserAction $action, CreateMentorAction $mentorAction): RedirectResponse
     {
         \DB::transaction(function () use ($request, $action, $mentorAction) {
             // Create the user
@@ -76,7 +81,7 @@ class UserController extends Controller
      * @param GetAllRolesAction $rolesAction
      * @return \Inertia\Response
      */
-    public function edit(User $user, UserWithRolesAction $userAction, GetAllRolesAction $rolesAction)
+    public function edit(User $user, UserWithRolesAction $userAction, GetAllRolesAction $rolesAction): Response
     {
         $user = $userAction->execute($user);
         $roles = $rolesAction->execute();
@@ -109,7 +114,7 @@ class UserController extends Controller
         UpdateMentorAction $updateMentorAction,
         DestroyMentorAction $destroyMentorAction
     ) {
-        \DB::transaction(function () use ($request, $user, $userAction, $updateMentorAction, $destroyMentorAction) {
+        \DB::transaction(function () use ($request, $user, $userAction, $updateMentorAction, $destroyMentorAction): void {
             $userAction->execute($user, $request->validated(), $request->role);
 
             if ($request->role === 'mentor') {
@@ -144,7 +149,7 @@ class UserController extends Controller
      * @param DestroyMentorAction $destroyMentorAction
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(User $user, DestroyUserAction $userAction, DestroyMentorAction $destroyMentorAction)
+    public function destroy(User $user, DestroyUserAction $userAction, DestroyMentorAction $destroyMentorAction): RedirectResponse
     {
         \DB::transaction(function () use ($user, $userAction, $destroyMentorAction) {
             // Delete mentor-specific data if it exists

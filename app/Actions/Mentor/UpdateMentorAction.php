@@ -16,6 +16,7 @@ class UpdateMentorAction
     {
         if ($mentor) {
             $mentor->update($data);
+
             return $mentor;
         }
 

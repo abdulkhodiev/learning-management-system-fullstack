@@ -8,6 +8,19 @@ use Illuminate\Support\Facades\DB;
 
 class GetAllCommissionsAction
 {
+
+    /**
+     * @param int $courseId
+     * @return array
+     * @throws \Exception
+     */
+    /**
+     * Get all commissions for a given course.
+     *
+     * @param int $courseId
+     * @return array
+     * @throws \Exception
+     */
     public function execute(int $courseId): array
     {
         $course = Course::find($courseId);

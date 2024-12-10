@@ -10,6 +10,13 @@ use Inertia\Response;
 
 class CourseReviewsController extends Controller
 {
+    /**
+     * Get all reviews for a course.
+     *
+     * @param Course $course The course to get reviews for.
+     * @param GetAllReviewsAction $getAllReviewsAction The action to get all reviews.
+     * @return Response A response containing the reviews.
+     */
     public function index(Course $course, GetAllReviewsAction $getAllReviewsAction): Response
     {
 

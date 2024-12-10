@@ -11,9 +11,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { CircleAlert } from "lucide-vue-next"
 
 defineOptions({
   layout: Layout,
+})
+
+defineProps({
+  commissions: {
+    type: Array,
+    required: true,
+  },
 })
 </script>
 
@@ -35,7 +43,13 @@ defineOptions({
       </Card>
     </div>
     <div class="rounded-lg bg-white">
-      <Table class="">
+      <p
+        v-if="commissions.length <= 0"
+        class="flex items-center gap-2 p-4 text-sm text-red-500"
+      >
+        <CircleAlert /> No Commissions found
+      </p>
+      <Table v-else>
         <TableHeader>
           <TableRow>
             <TableHead class="w-[100px]"> Order ID </TableHead>
@@ -47,13 +61,13 @@ defineOptions({
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell class="font-medium">#16A34A</TableCell>
-            <TableCell>John Doe</TableCell>
-            <TableCell>Student</TableCell>
-            <TableCell> 01 Jan 2023 </TableCell>
-            <TableCell>Received</TableCell>
-            <TableCell> $95.00 </TableCell>
+          <TableRow v-for="commission in commissions" :key="commission.id">
+            <TableCell class="font-medium">{{ commission.id }}</TableCell>
+            <TableCell>{{ commission.customer }}</TableCell>
+            <TableCell>{{ commission.type }}</TableCell>
+            <TableCell>{{ commission.date }} </TableCell>
+            <TableCell>{{ commission.status }}</TableCell>
+            <TableCell> {{ commission.commission }} </TableCell>
           </TableRow>
         </TableBody>
       </Table>

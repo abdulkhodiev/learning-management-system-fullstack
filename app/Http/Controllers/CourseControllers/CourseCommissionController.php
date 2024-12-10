@@ -1,45 +1,36 @@
 <?php
 
 namespace App\Http\Controllers\CourseControllers;
+
+use App\Actions\Course\Tabs\Commissions\GetAllCommissionsAction;
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use Inertia\Inertia;
-
 use Inertia\Response;
-use Illuminate\Http\RedirectResponse;
-
 
 class CourseCommissionController extends Controller
 {
     /**
-     * @return \Inertia\Response
+     * Displays the commissions for a given course.
+     *
+     * @param Course $course
+     * @param GetAllCommissionsAction $getAllCommissionsAction
+     * @return Response
      */
-
-    //  $courses = Course::with(['students' => function ($query) {
-    //     $query->select('users.id', 'users.first_name', 'users.last_name')
-    //           ->withPivot('price', 'purchased_at');
-    // }])->get();
-
-    // $commissions = [];
-
-    // foreach ($courses as $course) {
-    //     $totalEarnings = $course->students->sum(function ($student) {
-    //         return $student->pivot->price;
-    //     });
-
-    //     $commissions[] = [
-    //         'course_title' => $course->title,
-    //         'total_students' => $course->students->count(),
-    //         'total_earnings' => $totalEarnings,
-    //         'mentor' => $course->mentor->name ?? 'Unknown', // Mentor name if available
-    //     ];
-    // }
-
-    // return Inertia::render('CourseCommission', [
-    //     'commissions' => $commissions
-    // ]);
-    public function index(): Response
+    public function index(Course $course, GetAllCommissionsAction $getAllCommissionsAction): Response
     {
-        return Inertia::render('Courses/Tabs/Commissions/Index' );
+        if (!$course) {
+            return Inertia::render('Courses/Tabs/Commissions/Index', [
+                'error' => 'Course not found',
+            ]);
+        }
+
+        $commissions = $getAllCommissionsAction->execute($course->id);
+
+        return Inertia::render('Courses/Tabs/Commissions/Index', [
+            'commissions' => $commissions,
+
+        ]);
 
     }
 }

@@ -9,6 +9,8 @@ class CourseReview extends Model
 {
     use HasFactory;
 
+    protected $table = 'course_review';
+
     protected $fillable = [
         'rate',
         'comment',

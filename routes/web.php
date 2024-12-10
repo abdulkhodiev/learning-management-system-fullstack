@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function (): void {
    ->name('course.commissions.index');
 
    // Courses -> Reviews
-    Route::get('/courses/{course}/reviews/', [CourseReviewsController::class, 'index'])
+    Route::get('/courses/{course}/reviews', [CourseReviewsController::class, 'index'])
     ->name('course.reviews.index');
 
 });

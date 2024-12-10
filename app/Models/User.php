@@ -28,13 +28,10 @@ class User extends Authenticatable
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'purchases', 'user_id', 'course_id')
-                    ->withPivot('price', 'purchased_at')
-                    ->withTimestamps();
+        return $this->belongsToMany(Course::class, 'course_student')
+        ->withPivot('id', 'status', 'commission', 'created_at')
+        ->withTimestamps();
     }
-
-
-
     public function mentor()
     {
         return $this->hasOne(Mentor::class);
@@ -47,9 +44,4 @@ class User extends Authenticatable
     public function courseReview(){
         return $this->hasMany(CourseReview::class);
     }
-
-
-
-
-
 }

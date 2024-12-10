@@ -17,22 +17,11 @@ defineOptions({
   layout: Layout,
 })
 
-const courseReviews = {
-  id: 1,
-  rate: 5,
-  comment:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
-  user: {
-    id: 1,
-    first_name: "John",
-    last_name: "Doe",
-  },
-  course: {
-    id: 1,
-    title:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
-  },
-}
+const props = defineProps<{
+  reviews: any
+}>()
+
+console.log(props.reviews)
 </script>
 
 <template>
@@ -54,8 +43,15 @@ const courseReviews = {
         </CardContent>
       </Card>
     </div>
-    <div class="rounded-lg bg-white">
-      <ReviewsCard :review="courseReviews" />
+    <p class="text-sm text-muted-foreground" v-if="reviews.length === 0">
+      No Reviews Found
+    </p>
+    <div class="rounded-lg bg-white" v-else>
+      <ReviewsCard
+        v-for="review in reviews"
+        :key="review.id"
+        :review="review"
+      />
     </div>
   </div>
 </template>

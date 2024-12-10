@@ -1,23 +1,21 @@
 <?php
 
 namespace App\Http\Controllers\CourseControllers;
+
+use App\Actions\Course\Tabs\Review\GetAllReviewsAction;
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use Inertia\Inertia;
-
 use Inertia\Response;
-use Illuminate\Http\RedirectResponse;
-
 
 class CourseReviewsController extends Controller
 {
-
-    /**
-     *
-     * @return \Inertia\Response
-     */
-    public function index(): Response
+    public function index(Course $course, GetAllReviewsAction $getAllReviewsAction): Response
     {
-        return Inertia::render('Courses/Tabs/Reviews/Index' );
 
+        $reviews = $getAllReviewsAction->execute($course->id);
+        return Inertia::render('Courses/Tabs/Reviews/Index', [
+            'reviews' => $reviews
+        ]);
     }
 }

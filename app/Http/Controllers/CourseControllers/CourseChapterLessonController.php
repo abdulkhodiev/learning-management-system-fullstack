@@ -14,7 +14,8 @@ class CourseChapterLessonController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function index(): Response{
+    public function index(): Response
+    {
     return Inertia::render('Courses/Tabs/Chapters/Lessons/Index');
     }
 }

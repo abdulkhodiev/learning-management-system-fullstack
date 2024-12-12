@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Course extends Model
 {
@@ -33,7 +35,7 @@ class Course extends Model
      */
 
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
@@ -52,7 +54,7 @@ class Course extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function mentor()
+    public function mentor(): BelongsTo
     {
         return $this->belongsTo(Mentor::class);
     }
@@ -62,7 +64,7 @@ class Course extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function coupon()
+    public function coupon(): HasMany
     {
         return $this->hasMany(Coupon::class);
     }
@@ -72,7 +74,7 @@ class Course extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function chapters()
+    public function chapters(): HasMany
     {
         return $this->hasMany(CourseChapter::class);
     }
@@ -82,7 +84,7 @@ class Course extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function courseReview()
+    public function courseReview(): HasMany
     {
         return $this->hasMany(CourseReview::class);
     }

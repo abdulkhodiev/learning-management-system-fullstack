@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Lesson extends Model
 {
@@ -17,12 +18,22 @@ class Lesson extends Model
         'priority'
     ];
 
-    public function video()
+    /**
+     * Get the video associated with the Lesson
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function video(): BelongsTo
     {
         return $this->belongsTo(Video::class);
     }
 
-    public function courseChapter()
+    /**
+     * Get the course chapter associated with the Lesson
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function courseChapter(): BelongsTo
     {
         return $this->belongsTo(CourseChapter::class);
     }

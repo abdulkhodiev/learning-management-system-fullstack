@@ -3,6 +3,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -26,22 +29,42 @@ class User extends Authenticatable
         'linkedin',
     ];
 
-    public function courses()
+    /**
+     * Get all the courses that the user is enrolled in.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'course_student')
         ->withPivot('id', 'status', 'commission', 'created_at')
         ->withTimestamps();
     }
-    public function mentor()
+    /**
+     * Get the mentor for the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function mentor(): HasOne
     {
         return $this->hasOne(Mentor::class);
     }
 
-    public function course(){
+    /**
+     * Get all the courses created by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function course(): HasMany{
         return $this->hasMany(Course::class);
     }
 
-    public function courseReview(){
+    /**ßß
+     * Get all the reviews for the courses created by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function courseReview(): HasMany{
         return $this->hasMany(CourseReview::class);
     }
 }

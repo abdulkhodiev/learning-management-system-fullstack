@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Coupon extends Model
 {
@@ -21,7 +22,12 @@ class Coupon extends Model
         'end_time',
     ];
 
-    public function course()
+    /**
+     * The course that owns the coupon.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
     }

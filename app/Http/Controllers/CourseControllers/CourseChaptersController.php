@@ -29,8 +29,7 @@ class CourseChaptersController extends Controller
     public function index(GetAllChaptersAction $action, int $courseId): Response
     {
         $chapters = $action->execute($courseId);
-        return Inertia::render('Courses/Tabs/Chapters/Index',
-        ['chapters' => $chapters]);
+        return Inertia::render('Courses/Tabs/Chapters/Index', ['chapters' => $chapters]);
     }
 
 
@@ -44,7 +43,7 @@ class CourseChaptersController extends Controller
     public function store(
         CreateChapterAction $action,
         CreateChapterRequest $request
-        ): RedirectResponse{
+    ): RedirectResponse {
         $action->execute($request->validated());
 
         return redirect()->route('course.chapters.index',
@@ -77,7 +76,7 @@ class CourseChaptersController extends Controller
         UpdateChapterAction $action,
         UpdateChapterRequest $request,
         CourseChapter $courseChapter
-        ): RedirectResponse {
+    ): RedirectResponse {
 
       $action->execute($courseChapter, $request->validated());
 
@@ -96,7 +95,7 @@ class CourseChaptersController extends Controller
     public function destroy(
         DestroyChapterAction $action,
         CourseChapter $courseChapter
-        ): RedirectResponse{
+    ): RedirectResponse {
         $action->execute($courseChapter);
 
         return redirect()->route('course.chapters.index',

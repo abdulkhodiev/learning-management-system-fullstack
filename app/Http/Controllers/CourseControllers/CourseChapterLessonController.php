@@ -55,7 +55,7 @@ class CourseChapterLessonController extends Controller
     public function store(
         CreateLessonAction $action,
         CreateLessonRequest $request
-        ): RedirectResponse{
+    ): RedirectResponse {
         $action->execute($request->validated());
 
         // Retrieve the correct route parameters
@@ -95,17 +95,17 @@ class CourseChapterLessonController extends Controller
         Lesson $lesson,
         UpdateLessonAction $action,
         UpdateLessonRequest $request
-        ): RedirectResponse {
+    ): RedirectResponse {
         $action->execute($request->validated(), $lesson->id);
 
         // Retrieve the correct route parameters
         $course = $request->route('course');
         $chapter = $request->route('chapter');
 
-        return redirect()->route('course.chapters.lessons.index',
-        [
+        return redirect()->route('course.chapters.lessons.index',[
             'courseId' => $course,
-            'chapterId' => $chapter,]);
+            'chapterId' => $chapter,
+        ]);
     }
 
     /**

@@ -29,7 +29,8 @@ class CourseChaptersController extends Controller
     public function index(GetAllChaptersAction $action, int $courseId): Response
     {
         $chapters = $action->execute($courseId);
-        return Inertia::render('Courses/Tabs/Chapters/Index', ['chapters' => $chapters]);
+        return Inertia::render('Courses/Tabs/Chapters/Index',
+        ['chapters' => $chapters]);
     }
 
 
@@ -40,11 +41,14 @@ class CourseChaptersController extends Controller
      * @param CreateChapterRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateChapterAction $action, CreateChapterRequest $request): RedirectResponse
-    {
+    public function store(
+        CreateChapterAction $action,
+        CreateChapterRequest $request
+        ): RedirectResponse{
         $action->execute($request->validated());
 
-        return redirect()->route('course.chapters.index', ['course' => $request->course_id])
+        return redirect()->route('course.chapters.index',
+        ['course' => $request->course_id])
         ->with('success', 'Chapter created successfully.');
     }
 
@@ -57,7 +61,8 @@ class CourseChaptersController extends Controller
     public function edit(CourseChapter $courseChapter): Response
     {
 
-        return Inertia::render('Courses/Tabs/Chapters/Index', ['chapter' => $courseChapter]);
+        return Inertia::render('Courses/Tabs/Chapters/Index',
+        ['chapter' => $courseChapter]);
     }
 
     /**
@@ -68,12 +73,16 @@ class CourseChaptersController extends Controller
      * @param  \App\Models\CourseChapter  $courseChapter
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateChapterAction $action, UpdateChapterRequest $request, CourseChapter $courseChapter): RedirectResponse
-    {
+    public function update(
+        UpdateChapterAction $action,
+        UpdateChapterRequest $request,
+        CourseChapter $courseChapter
+        ): RedirectResponse {
 
       $action->execute($courseChapter, $request->validated());
 
-        return redirect()->route('course.chapters.index', ['course' => $request->course_id])
+        return redirect()->route('course.chapters.index',
+        ['course' => $request->course_id])
             ->with('success', 'Chapter updated successfully.');
     }
 
@@ -84,11 +93,14 @@ class CourseChaptersController extends Controller
      * @param  \App\Actions\Course\Tabs\Chapters\DestroyChapterAction  $action
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(DestroyChapterAction $action, CourseChapter $courseChapter): RedirectResponse
-    {
+    public function destroy(
+        DestroyChapterAction $action,
+        CourseChapter $courseChapter
+        ): RedirectResponse{
         $action->execute($courseChapter);
 
-        return redirect()->route('course.chapters.index', ['course' => $courseChapter->course_id])
+        return redirect()->route('course.chapters.index',
+        ['course' => $courseChapter->course_id])
             ->with('success', 'Chapter deleted successfully.');
     }
 

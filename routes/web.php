@@ -46,13 +46,17 @@ Route::middleware('auth')->group(function (): void {
     ->name('course.chapters.destroy');
 
     // Courses -> Chapters -> Lessons
-    Route::get('/courses/{course}/chapters/{chapter}/lessons', [CourseChapterLessonController::class, 'index'])
+    Route::get('/courses/{courseId}/chapters/{chapterId}/lessons', [CourseChapterLessonController::class, 'index'])
     ->name('course.chapters.lessons.index');
-    Route::post('/courses/{course}/chapters/{chapter}/lessons', [CourseChapterLessonController::class, 'store'])
+    Route::get('/courses/{courseId}/chapters/{chapterId}/lessons/create', [CourseChapterLessonController::class, 'create'])
+    ->name('course.chapters.lessons.create');
+    Route::post('/courses/{courseId}/chapters/{chapterId}/lessons', [CourseChapterLessonController::class, 'store'])
     ->name('course.chapters.lessons.store');
-    Route::put('/courses/{course}/chapters/{chapter}/lessons/{lesson}', [CourseChapterLessonController::class, 'update'])
+    Route::get('/courses/{courseId}/chapters/{chapterId}/lessons/{lessonId}/edit', [CourseChapterLessonController::class, 'edit'])
+    ->name('course.chapters.lessons.edit');
+    Route::put('/courses/{courseId}/chapters/{chapterId}/lessons/{lessonId}', [CourseChapterLessonController::class, 'update'])
     ->name('course.chapters.lessons.update');
-    Route::delete('/courses/{course}/chapters/{chapter}/lessons/{lesson}', [CourseChapterLessonController::class, 'destroy'])
+    Route::delete('/courses/{courseId}/chapters/{chapterId}/lessons/{lessonId}', [CourseChapterLessonController::class, 'destroy'])
     ->name('course.chapters.lessons.destroy');
 
 

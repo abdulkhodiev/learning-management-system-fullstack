@@ -20,7 +20,7 @@ class CourseChapter extends Model
      */
     public function course(): BelongsTo
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class, 'course_id');
     }
 
 
@@ -31,6 +31,6 @@ class CourseChapter extends Model
      */
     public function lessons(): HasMany
     {
-        return $this->hasMany(Lesson::class);
+        return $this->hasMany(Lesson::class, 'course_chapter_id');
     }
 }

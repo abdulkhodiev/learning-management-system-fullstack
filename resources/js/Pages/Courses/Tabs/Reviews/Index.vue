@@ -1,27 +1,18 @@
 <script setup lang="ts">
-import RiseIcon from "@/assets/Icons/Commissions/RiseIcon.vue"
 import Layout from "../_components/Layout.vue"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { Card, CardContent } from "@/components/ui/card"
+
 import Badge from "@/components/ui/badge/Badge.vue"
 import ReviewsCard from "./_components/ReviewsCard.vue"
+import { Review } from "@/types/Models/course/tabs/reviews"
 
 defineOptions({
   layout: Layout,
 })
 
 const props = defineProps<{
-  reviews: any
+  reviews: Review[]
 }>()
-
-console.log(props.reviews)
 </script>
 
 <template>

@@ -13,20 +13,10 @@ class Lesson extends Model
     protected $fillable = [
         'name',
         'duration',
-        'video_id',
+        'video_url',
         'course_chapter_id',
         'priority'
     ];
-
-    /**
-     * Get the video associated with the Lesson
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function video(): BelongsTo
-    {
-        return $this->belongsTo(Video::class);
-    }
 
     /**
      * Get the course chapter associated with the Lesson
@@ -35,7 +25,7 @@ class Lesson extends Model
      */
     public function courseChapter(): BelongsTo
     {
-        return $this->belongsTo(CourseChapter::class);
+        return $this->belongsTo(CourseChapter::class, 'course_chapter_id');
     }
 
 

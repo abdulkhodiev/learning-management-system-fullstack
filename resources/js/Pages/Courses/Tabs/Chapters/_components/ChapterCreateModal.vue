@@ -18,7 +18,6 @@ import { toast } from "vue-sonner"
 
 const page = usePage()
 const courseID = page.url.split("/")[2]
-console.log(courseID)
 
 // const open = ref(false)
 
@@ -31,8 +30,6 @@ const chapterForm = useForm({
   name: props.chapter?.name || "",
   course_id: courseID,
 })
-
-console.log(props.chapter?.id)
 
 const handleSubmit = () => {
   if (props.chapter) {

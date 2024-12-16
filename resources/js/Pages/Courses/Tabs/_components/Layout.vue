@@ -337,10 +337,10 @@ const active = "text-primary"
               Chapters
             </Link>
             <Link
-              href="promotions"
+              href="coupons"
               class="pb-2 text-sm hover:text-primary"
               :class="
-                pathname.includes('promotions')
+                pathname.includes('coupons')
                   ? 'border-b-[2px] border-primary text-primary'
                   : ''
               "

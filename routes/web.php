@@ -6,6 +6,7 @@ use App\Http\Controllers\CourseControllers\CourseChapterLessonController;
 use App\Http\Controllers\CourseControllers\CourseChaptersController;
 use App\Http\Controllers\CourseControllers\CourseCommissionController;
 use App\Http\Controllers\CourseControllers\CourseController;
+use App\Http\Controllers\CourseControllers\CourseCouponController;
 use App\Http\Controllers\CourseControllers\CourseReviewsController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -59,6 +60,14 @@ Route::middleware('auth')->group(function (): void {
     Route::delete('/courses/{courseId}/chapters/{chapterId}/lessons/{lessonId}', [CourseChapterLessonController::class, 'destroy'])
     ->name('course.chapters.lessons.destroy');
 
+    // Courses -> Coupons
+    Route::get('/courses/{course}/coupons', [CourseCouponController::class, 'index'])
+    ->name('course.coupons.index');
+    Route::get('/courses/{course}/coupons/create', [CourseCouponController::class, 'create'])->name('course.coupons.create');
+    Route::post('/courses/{course}/coupons', [CourseCouponController::class, 'store'])->name('course.coupons.store');
+    Route::get('/courses/{course}/coupons/{coupon}/edit', [CourseCouponController::class, 'edit'])->name('course.coupons.edit');
+    Route::put('/courses/{course}/coupons/{coupon}', [CourseCouponController::class, 'update'])->name('course.coupons.update');
+    Route::delete('/courses/{course}/coupons/{coupon}', [CourseCouponController::class, 'destroy'])->name('course.coupons.destroy');
 
 });
 

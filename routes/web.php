@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommunicationControllers\MessagesController;
+use App\Http\Controllers\CommunicationControllers\NotificationsController;
 use App\Http\Controllers\CourseControllers\CourseChapterLessonController;
 use App\Http\Controllers\CourseControllers\CourseChaptersController;
 use App\Http\Controllers\CourseControllers\CourseCommissionController;
@@ -9,6 +11,7 @@ use App\Http\Controllers\CourseControllers\CourseController;
 use App\Http\Controllers\CourseControllers\CourseCouponController;
 use App\Http\Controllers\CourseControllers\CourseReviewsController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\CommunicationControllers\ReviewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -68,6 +71,18 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/courses/{course}/coupons/{coupon}/edit', [CourseCouponController::class, 'edit'])->name('course.coupons.edit');
     Route::put('/courses/{course}/coupons/{coupon}', [CourseCouponController::class, 'update'])->name('course.coupons.update');
     Route::delete('/courses/{course}/coupons/{coupon}', [CourseCouponController::class, 'destroy'])->name('course.coupons.destroy');
+
+
+    // Communication -> Reviews
+    Route::get('/communication/reviews', [ReviewController::class, 'index'])->name('communications.reviews.index');
+
+
+    // Communication -> Messages
+    Route::get('/communication/messages', [MessagesController::class, 'index'])->name('communications.messages.index');
+
+
+    // Communication -> Notifications
+    Route::get('/communication/notifications', [NotificationsController::class, 'index'])->name('communications.notifications.index');
 
 });
 

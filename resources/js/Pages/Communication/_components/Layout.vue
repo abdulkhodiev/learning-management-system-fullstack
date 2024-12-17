@@ -283,26 +283,12 @@ const active = "text-primary"
       </header>
       <div class="flex flex-1 flex-col gap-4 p-4">
         <div class="flex items-center justify-between">
-          <h1>Course Name</h1>
-          <Button as-child>
-            <Link href="/courses"> Back <ArrowLeft /></Link>
-          </Button>
+          <h1>Communication</h1>
         </div>
         <div>
           <div
             class="flex flex-wrap items-center justify-center gap-4 pb-0 md:justify-start"
           >
-            <Link
-              href="commissions"
-              class="pb-2 text-sm hover:text-primary"
-              :class="
-                pathname.includes('commissions')
-                  ? 'border-b-[2px] border-primary text-primary'
-                  : ''
-              "
-            >
-              Commissions
-            </Link>
             <Link
               href="reviews"
               class="pb-2 text-sm hover:text-primary"
@@ -315,48 +301,26 @@ const active = "text-primary"
               Reviews
             </Link>
             <Link
-              href="customers"
+              href="messages"
               class="pb-2 text-sm hover:text-primary"
               :class="
-                pathname.includes('customers')
+                pathname.includes('messages')
                   ? 'border-b-[2px] border-primary text-primary'
                   : ''
               "
             >
-              Customers
+              Messages
             </Link>
             <Link
-              href="chapters"
+              href="notifications"
               class="pb-2 text-sm hover:text-primary"
               :class="
-                pathname.includes('chapters')
+                pathname.includes('notifications')
                   ? 'border-b-[2px] border-primary text-primary'
                   : ''
               "
             >
-              Chapters
-            </Link>
-            <Link
-              href="coupons"
-              class="pb-2 text-sm hover:text-primary"
-              :class="
-                pathname.includes('coupons')
-                  ? 'border-b-[2px] border-primary text-primary'
-                  : ''
-              "
-            >
-              Promotions
-            </Link>
-            <Link
-              href="settings"
-              class="pb-2 text-sm hover:text-primary"
-              :class="
-                pathname.includes('settings')
-                  ? 'border-b-[2px] border-primary text-primary'
-                  : ''
-              "
-            >
-              Settings
+              Notifications
             </Link>
           </div>
           <Separator class="mt-0 pt-0" />

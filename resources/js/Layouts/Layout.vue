@@ -90,7 +90,7 @@ const data = {
     },
     {
       title: "Communication",
-      url: "#",
+      url: "/communication/reviews",
       icon: Mails,
     },
     {

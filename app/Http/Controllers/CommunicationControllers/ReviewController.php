@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers\CommunicationControllers;
 
+use App\Actions\Communication\Reviews\GetAllReviewsAction;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ReviewController extends Controller
 {
-    public function index(): Response
+    /**
+     * Displays the reviews index page.
+     *
+     * @return Response
+     */
+    public function index(GetAllReviewsAction $getAllReviewsAction): Response
     {
-        return Inertia::render('Communication/Reviews/Index');
+        $reviews = $getAllReviewsAction->execute();
+        return Inertia::render('Communication/Reviews/Index', [
+            'reviews' => $reviews
+        ]);
     }
 }

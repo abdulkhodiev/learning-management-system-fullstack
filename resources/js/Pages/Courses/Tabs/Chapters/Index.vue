@@ -73,16 +73,32 @@ const handleDelete = (id: number) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow
-            v-for="chapter in chapters"
-            :key="chapter.id"
-            @click="
-              router.visit(`/courses/${course}/chapters/${chapter.id}/lessons`)
-            "
-          >
-            <TableCell class="font-medium">{{ chapter.id }}</TableCell>
-            <TableCell>{{ chapter.name }}</TableCell>
-            <TableCell>{{ convertTime(chapter.created_at) }}</TableCell>
+          <TableRow v-for="chapter in chapters" :key="chapter.id">
+            <TableCell
+              class="font-medium"
+              @click="
+                router.visit(
+                  `/courses/${course}/chapters/${chapter.id}/lessons`
+                )
+              "
+              >{{ chapter.id }}</TableCell
+            >
+            <TableCell
+              @click="
+                router.visit(
+                  `/courses/${course}/chapters/${chapter.id}/lessons`
+                )
+              "
+              >{{ chapter.name }}</TableCell
+            >
+            <TableCell
+              @click="
+                router.visit(
+                  `/courses/${course}/chapters/${chapter.id}/lessons`
+                )
+              "
+              >{{ convertTime(chapter.created_at) }}</TableCell
+            >
             <TableCell
               ><div class="flex items-center justify-end gap-2">
                 <ChapterCreateModal :edit="true" :chapter="chapter" />

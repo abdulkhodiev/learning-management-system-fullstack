@@ -2,10 +2,15 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\User;
+use App\Models\Mentor;
+use App\Models\Course;
+use App\Models\CourseChapter;
+use App\Models\Lesson;
+use App\Models\CourseReview; // Import the CourseReview model
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 
 class UserSeeder extends Seeder
@@ -15,84 +20,122 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create Permissions one by one
+        // Step 1: Create Permissions
         $permissions = [
-            'view role',
-            'create role',
-            'update role',
-            'delete role',
-            'view permission',
-            'create permission',
-            'update permission',
-            'delete permission',
-            'view user',
-            'create user',
-            'update user',
-            'delete user',
-            'view task',
-            'create task',
-            'update task',
-            'delete task',
+            'view role', 'create role', 'update role', 'delete role',
+            'view permission', 'create permission', 'update permission', 'delete permission',
+            'view user', 'create user', 'update user', 'delete user',
+            'view task', 'create task', 'update task', 'delete task',
         ];
 
         foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+            Permission::create(['name' => $permission]);
         }
 
-        // Create Roles
-        $superAdminRole = Role::create(['name' => 'super-admin']);
-        $adminRole = Role::create(['name' => 'admin']);
-        $mentorRole = Role::create(['name' => 'mentor']);
-        $studentRole = Role::create(['name' => 'student']);
+        // Step 2: Create Categories
+        $categories = Category::factory()
+            ->count(5) // Create 5 categories
+            ->create();
 
-        // Lets give all permission to super-admin role.
-        $allPermissionNames = Permission::pluck('name')->toArray();
-        $superAdminRole->givePermissionTo($allPermissionNames);
+        $roles = [
+            'super-admin', 'admin', 'mentor', 'student'
+        ];
 
-        // Let's give few permissions to admin role.
-        $adminRole->givePermissionTo([
-            'create role', 'view role', 'update role',
-            'create permission', 'view permission',
-            'create user', 'view user', 'update user',
-            'create task', 'view task', 'update task'
-        ]);
+        foreach ($roles as $role) {
+            Role::create(['name' => $role]);
+        }
 
-        // Create Users and assign Roles
-        $superAdminUser = User::firstOrCreate([
-            'email' => 'superadmin@gmail.com',
-        ], [
+        // Step 3: Create Users and Assign Roles
+
+        // Super Admin
+        User::factory()->create([
             'first_name' => 'Super',
             'last_name' => 'Admin',
             'username' => 'superadmin',
             'email' => 'superadmin@gmail.com',
-            'password' => Hash::make('87654321'),
-        ]);
+            'password' => bcrypt('87654321'),
+        ])->assignRole('super-admin');
 
-        $superAdminUser->assignRole($superAdminRole);
-
-        $adminUser = User::firstOrCreate([
-            'email' => 'student@gmail.com',
-        ], [
-            'first_name' => 'Student',
+        // Admin
+        User::factory()->create([
+            'first_name' => 'Admin',
             'last_name' => 'User',
-            'username' => 'student',
-            'email' => 'student@gmail.com',
-            'password' => Hash::make('87654321'),
-        ]);
+            'username' => 'admin',
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('87654321'),
+        ])->assignRole('admin');
 
-        $adminUser->assignRole($adminRole);
+        // Mentors and their Courses
+        $mentors = User::factory()
+            ->count(3)
+            ->has(Mentor::factory()) // Create mentor profiles
+            ->create();
 
-        $mentorUser = User::firstOrCreate([
-            'email' => 'mentor@gmail.com',
-        ], [
-            'first_name' => 'Mentor',
-            'last_name' => 'User',
-            'username' => 'mentor',
-            'email' => 'mentor@gmail.com',
-            'password' => Hash::make('87654321'),
-        ]);
+        foreach ($mentors as $mentor) {
+            // Create courses for each mentor
+            $courses = Course::factory()
+                ->count(3) // Create 3 courses per mentor
+                ->for($mentor->mentor) // Associate with the mentor
+                ->state(function () use ($categories) {
+                    return [
+                        'category_id' => $categories->random()->id, // Assign a random category
+                    ];
+                })
+                ->create();
 
-        $mentorUser->assignRole($mentorRole);
+            // Create chapters, lessons, and attach students to courses
+            $courses->each(function ($course) {
+                // Create chapters for each course
+                $chapters = CourseChapter::factory()
+                    ->count(3) // Create 3 chapters for each course
+                    ->create(['course_id' => $course->id]);
+
+                // Create lessons for each chapter
+                $chapters->each(function ($chapter) {
+                    Lesson::factory()
+                        ->count(2) // Create 2 lessons for each chapter
+                        ->create(['course_chapter_id' => $chapter->id]);
+                });
+
+                // Attach students to each course with the pivot data (commission, status, etc.)
+                $students = User::factory()
+                    ->count(5) // Create 5 students per course
+                    ->create();
+
+                // Attach students to course with commission and status
+                $students->each(function ($student) use ($course) {
+                    $student->courses()->attach($course->id, [
+                        'status' => ['pending', 'received'][array_rand(['pending', 'received'])],
+                        'commission' => 10,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                });
+
+                // Create reviews for the course (if you want to generate reviews)
+                CourseReview::factory()
+                    ->count(3) // Generate 3 reviews for each course
+                    ->create([
+                        'course_id' => $course->id, // Link review to the current course
+                    ]);
+            });
+        }
+
+        // Students with Enrolled Courses (if you want students with pre-attached courses)
+        User::factory()
+            ->count(10)
+            ->hasAttached(
+                Course::factory()->count(3),
+                [
+                    'status' => ['pending', 'received'][array_rand(['pending', 'received'])],
+                    'commission' => 10,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            )
+            ->create()
+            ->each(function ($student) {
+                $student->assignRole('student');
+            });
     }
 }
-

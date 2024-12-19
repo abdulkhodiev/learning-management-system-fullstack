@@ -19,7 +19,7 @@ defineProps<{
     >
       <CircleAlert /> No Reviews Found
     </p>
-    <div class="rounded-lg bg-white">
+    <div class="space-y-4 rounded-lg bg-white">
       <ReviewsCard
         v-for="review in reviews"
         :key="review.id"

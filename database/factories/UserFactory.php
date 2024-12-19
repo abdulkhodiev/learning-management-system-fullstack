@@ -7,32 +7,20 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     protected $model = User::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
-    public function definition()
+    public function definition(): array
     {
         return [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'username' => $this->faker->unique()->userName,
             'email' => $this->faker->unique()->safeEmail,
-            'password' => bcrypt('password'), // or Hash::make('password')
-            'role' => 'student',  // Add default role here if needed
+            'password' => bcrypt('87654321'),
+            'role' => 'student',
             'image' => $this->faker->imageUrl(),
-            'language' => 'en',
+            'language' => $this->faker->randomElement(['en', 'es', 'fr']),
             'description' => $this->faker->paragraph,
-            'youtube' => $this->faker->url,
-            'x' => null,
             'website' => $this->faker->url,
             'linkedin' => $this->faker->url,
         ];

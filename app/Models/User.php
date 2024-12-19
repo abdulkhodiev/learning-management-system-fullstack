@@ -34,12 +34,15 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
+
     public function courses(): BelongsToMany
     {
-        return $this->belongsToMany(Course::class, 'course_student')
-        ->withPivot('id', 'status', 'commission', 'created_at')
-        ->withTimestamps();
+        return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id')
+            ->withPivot('id', 'status', 'commission', 'created_at')
+            ->withTimestamps();
     }
+
+
     /**
      * Get the mentor for the user.
      *
@@ -56,7 +59,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function course(): HasMany{
-        return $this->hasMany(Course::class);
+        return $this->hasMany(related: Course::class);
     }
 
     /**ßß

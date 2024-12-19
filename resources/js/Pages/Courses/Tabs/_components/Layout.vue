@@ -315,17 +315,6 @@ const active = "text-primary"
               Reviews
             </Link>
             <Link
-              href="customers"
-              class="pb-2 text-sm hover:text-primary"
-              :class="
-                pathname.includes('customers')
-                  ? 'border-b-[2px] border-primary text-primary'
-                  : ''
-              "
-            >
-              Customers
-            </Link>
-            <Link
               href="chapters"
               class="pb-2 text-sm hover:text-primary"
               :class="

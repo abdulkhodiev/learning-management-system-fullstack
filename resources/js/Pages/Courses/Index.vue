@@ -52,8 +52,7 @@ const handleDelete = (id: number) => {
       <Card
         v-for="course in courses"
         :key="course.id"
-        class="flex cursor-pointer flex-col justify-between"
-        @click="router.get(`/courses/${course.id}/commissions`)"
+        class="flex flex-col justify-between"
       >
         <CardHeader class="p-4 pb-2">
           <div class="flex items-center justify-between gap-2">
@@ -98,7 +97,11 @@ const handleDelete = (id: number) => {
           <CardTitle class="truncate text-lg">{{ course.title }}</CardTitle>
         </CardHeader>
         <Separator class="mx-auto w-[90%]" />
-        <CardContent class="grid grid-cols-3 gap-4 p-4 pt-2">
+
+        <CardContent
+          class="grid cursor-pointer grid-cols-3 gap-4 p-4 pt-2"
+          @click="router.get(`/courses/${course.id}/commissions`)"
+        >
           <div>
             <h4 class="font-semibold">${{ course.price }}</h4>
             <p class="text-sm">Price</p>

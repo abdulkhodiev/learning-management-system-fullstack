@@ -13,11 +13,13 @@ import { Trash } from "lucide-vue-next"
 const props = defineProps<{
   review: Review
 }>()
+
+console.log(props.review)
 </script>
 
 <template>
   <Card
-    class="flex w-full items-start justify-between gap-[10px] rounded-2xl p-4 shadow-[0_0_8px_0_#3B82F61F]"
+    class="flex w-full items-start justify-between gap-[10px] rounded-xl p-4 shadow-[0_0_8px_0_#3B82F61F]"
   >
     <CardContent class="m-0 flex flex-col justify-between gap-1.5 p-0">
       <div class="flex gap-2">
@@ -35,7 +37,7 @@ const props = defineProps<{
           alt=""
         />
         <div>
-          <p>{{ review.user.first_name }} {{ review.user.last_name }}</p>
+          <p>{{ review.user.name }}</p>
           <p class="text-sm text-muted-foreground">3 days ago</p>
         </div>
       </div>

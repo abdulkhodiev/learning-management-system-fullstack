@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CourseControllers;
 
 use App\Actions\Course\Tabs\Review\GetAllReviewsAction;
+use App\Actions\Course\Tabs\Review\GetTotalInfoAction;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Inertia\Inertia;
@@ -17,12 +18,14 @@ class CourseReviewsController extends Controller
      * @param GetAllReviewsAction $getAllReviewsAction The action to get all reviews.
      * @return Response A response containing the reviews.
      */
-    public function index(Course $course, GetAllReviewsAction $getAllReviewsAction): Response
+    public function index(Course $course, GetAllReviewsAction $getAllReviewsAction,  GetTotalInfoAction $getTotalInCourseAction): Response
     {
 
         $reviews = $getAllReviewsAction->execute($course->id);
+        $totalInfo = $getTotalInCourseAction->execute($course->id);
         return Inertia::render('Courses/Tabs/Reviews/Index', [
-            'reviews' => $reviews
+            'reviews' => $reviews,
+            'totalInfo' => $totalInfo,
         ]);
     }
 }

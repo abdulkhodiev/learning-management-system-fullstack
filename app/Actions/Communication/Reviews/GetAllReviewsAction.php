@@ -2,19 +2,33 @@
 
 namespace App\Actions\Communication\Reviews;
 
+use App\Models\Course;
 use App\Models\CourseReview;
-
-
 
 class GetAllReviewsAction
 {
-    /**
-     * Returns all reviews.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection|\App\Models\CourseReview[]
-     */
-    public function execute()
+
+    public function execute(): array
     {
-        return CourseReview::all();
+
+
+        $reviews = CourseReview::with(['user', 'course'])->get()->map(function ($review) {
+            return [
+                'id' => $review->id,
+                'comment' => $review->comment,
+                'rate' => $review->rate,
+                'user' => [
+                    'id' => $review->user->id,
+                    'name' => $review->user->first_name . ' ' . $review->user->last_name,
+                ],
+                'course' => [
+                    'id' => $review->course->id,
+                    'title' => $review->course->title,
+                ],
+            ];
+        });
+
+
+        return $reviews->toArray();
     }
 }

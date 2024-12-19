@@ -34,7 +34,7 @@ class CategoryController extends Controller
     /**
      * @return \Inertia\Response
      */
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Category/CreateEdit');
     }

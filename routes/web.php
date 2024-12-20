@@ -10,6 +10,7 @@ use App\Http\Controllers\CourseControllers\CourseCommissionController;
 use App\Http\Controllers\CourseControllers\CourseController;
 use App\Http\Controllers\CourseControllers\CourseCouponController;
 use App\Http\Controllers\CourseControllers\CourseReviewsController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CommunicationControllers\ReviewController;
 use App\Http\Controllers\RoleController;
@@ -83,6 +84,9 @@ Route::middleware('auth')->group(function (): void {
 
     // Communication -> Notifications
     Route::get('/communication/notifications', [NotificationsController::class, 'index'])->name('communications.notifications.index');
+
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
 });
 

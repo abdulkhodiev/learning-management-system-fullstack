@@ -14,6 +14,7 @@ import Layout from "../_components/Layout.vue"
 import Badge from "@/components/ui/badge/Badge.vue"
 import { Coupon } from "@/types/Models/course/tabs/coupons"
 import { router, usePage } from "@inertiajs/vue3"
+import { AreaChart } from "@/components/ui/chart-area"
 
 const course = usePage().url.split("/")[2]
 
@@ -33,6 +34,16 @@ defineProps<{
       <Button @click="router.get(`/courses/${course}/coupons/create`)"
         >Create Coupon</Button
       >
+    </div>
+    <div>
+      <!-- <AreaChart
+        class="w-full"
+        :data="data"
+        :colors="['#FF0000', '#00FF00', '#0000FF']"
+        :show-grid-line="false"
+        index="name"
+        :categories="['total', 'received', 'pending']"
+      /> -->
     </div>
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       <Card class="flex items-center" v-for="i in 3">

@@ -283,7 +283,7 @@ const active = "text-primary"
       </header>
       <div class="flex flex-1 flex-col gap-4 p-4">
         <div class="flex items-center justify-between">
-          <h1>Course Name</h1>
+          <h1>Course Details</h1>
           <Button as-child>
             <Link href="/courses"> Back <ArrowLeft /></Link>
           </Button>
@@ -335,17 +335,6 @@ const active = "text-primary"
               "
             >
               Promotions
-            </Link>
-            <Link
-              href="settings"
-              class="pb-2 text-sm hover:text-primary"
-              :class="
-                pathname.includes('settings')
-                  ? 'border-b-[2px] border-primary text-primary'
-                  : ''
-              "
-            >
-              Settings
             </Link>
           </div>
           <Separator class="mt-0 pt-0" />

@@ -23,7 +23,7 @@ class Lesson extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function courseChapter(): BelongsTo
+    public function chapters(): BelongsTo
     {
         return $this->belongsTo(CourseChapter::class, 'course_chapter_id');
     }

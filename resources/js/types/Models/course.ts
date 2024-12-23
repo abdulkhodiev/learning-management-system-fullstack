@@ -10,3 +10,11 @@ export interface Course {
   created_at: string
   updated_at: string
 }
+
+export type CourseWithDetails = Course & {
+  number_of_lessons: number
+  number_of_chapters: number
+  number_of_orders: number
+  number_of_reviews: number
+  average_rating: number
+}

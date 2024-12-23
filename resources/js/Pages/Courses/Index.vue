@@ -14,13 +14,17 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { toast } from "vue-sonner"
-import { Course } from "@/types/Models/course"
+import { CourseWithDetails } from "@/types/Models/course"
 import Separator from "@/components/ui/separator/Separator.vue"
 import Badge from "@/components/ui/badge/Badge.vue"
 import { PenBox, Trash2Icon } from "lucide-vue-next"
 
-defineProps<{ courses: Course[] }>()
+const props = defineProps<{ courses: CourseWithDetails[] }>()
 
+/**
+ * Deletes a course by id and shows a success or error toast message
+ * @param id The id of the course to delete
+ */
 const handleDelete = (id: number) => {
   router.delete(`/courses/${id}`, {
     onSuccess: () => {
@@ -107,24 +111,26 @@ const handleDelete = (id: number) => {
             <p class="text-sm">Price</p>
           </div>
           <div>
-            <h4 class="font-semibold">${{ course.price }}</h4>
+            <h4 class="font-semibold">{{ course.number_of_chapters }}</h4>
             <p class="text-sm">Chapters</p>
           </div>
           <div>
-            <h4 class="font-semibold">${{ course.price }}</h4>
+            <h4 class="font-semibold">{{ course.number_of_orders }}</h4>
             <p class="text-sm">Orders</p>
           </div>
           <div>
-            <h4 class="font-semibold">${{ course.price }}</h4>
-            <p class="text-sm">Ceritificates</p>
+            <h4 class="font-semibold">{{ course.number_of_lessons }}</h4>
+            <p class="text-sm">Lessons</p>
           </div>
           <div>
-            <h4 class="font-semibold">${{ course.price }}</h4>
+            <h4 class="font-semibold">{{ course.number_of_reviews }}</h4>
             <p class="text-sm">Reviews</p>
           </div>
           <div>
-            <h4 class="font-semibold">${{ course.price }}</h4>
-            <p class="text-sm">Add to Shelf</p>
+            <h4 class="font-semibold">
+              {{ Math.round(course.average_rating).toFixed(2) }}
+            </h4>
+            <p class="text-sm">Rating</p>
           </div>
         </CardContent>
       </Card>

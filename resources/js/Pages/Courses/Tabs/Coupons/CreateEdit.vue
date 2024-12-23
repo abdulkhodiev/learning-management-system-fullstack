@@ -61,7 +61,7 @@ const handleSubmit = () => {
       },
     })
   } else {
-    couponForm.post("/courses/{course}/coupons", {
+    couponForm.post(`/courses/${course}/coupons`, {
       onSuccess: () => {
         toast.success("Coupon added successfully!")
         router.get(`/courses/${course}/coupons`)

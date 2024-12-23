@@ -19,8 +19,8 @@ Before starting the installation, ensure that the following dependencies are ins
 Clone the repository to your local machine using Git:
 
 ```bash
-git clone <repository-url>
-cd <project-directory>
+git clone https://github.com/abdulkhodiev/learning-management-system-fullstack.git
+cd learning-management-system-fullstack
 ```
 
 ### Step 2: Install PHP and JavaScript Dependencies

@@ -65,13 +65,12 @@ Edit the .env file:
 Open the .env file and configure the settings to match your local environment. By default, Sail uses a MySQL Docker container, so ensure that the database configuration is correct:
 
 ```env
-Copy code
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
+DB_CONNECTION=pgsql
+DB_HOST=pgsql
+DB_PORT=5432
 DB_DATABASE=your_database_name
-DB_USERNAME=root
-DB_PASSWORD=root
+DB_USERNAME=your_user_name
+DB_PASSWORD=your_password
 ```
 
 ### Step 4: Generate Application Key

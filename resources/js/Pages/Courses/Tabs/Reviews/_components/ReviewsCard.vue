@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Review } from "@/types/Models/course/tabs/reviews"
 import { Trash } from "lucide-vue-next"
+import { router } from "@inertiajs/vue3"
 
 const props = defineProps<{
   review: Review
@@ -54,7 +55,10 @@ console.log(props.review)
           >...</DropdownMenuTrigger
         >
         <DropdownMenuContent>
-          <DropdownMenuItem><Trash class="mr-3" /> Delete</DropdownMenuItem>
+          <DropdownMenuItem
+            @click="router.delete(`/communication/reviews/${review.id}`)"
+            ><Trash class="mr-3" /> Delete</DropdownMenuItem
+          >
         </DropdownMenuContent>
       </DropdownMenu>
     </CardFooter>

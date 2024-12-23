@@ -4,7 +4,7 @@ namespace App\Actions\Course\Tabs\Coupons;
 
 use App\Models\Coupon;
 
-class CreataCouponAction
+class CreateCouponAction
 {
     /**
      * Creates a new coupon from the given data

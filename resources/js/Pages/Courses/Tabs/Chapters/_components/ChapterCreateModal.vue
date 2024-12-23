@@ -19,8 +19,6 @@ import { toast } from "vue-sonner"
 const page = usePage()
 const courseID = page.url.split("/")[2]
 
-// const open = ref(false)
-
 const props = defineProps<{
   chapter?: Chapter
   edit: boolean
@@ -32,22 +30,28 @@ const chapterForm = useForm({
 })
 
 const handleSubmit = () => {
+  if (!courseID || (props.edit && !props.chapter?.id)) {
+    toast.error("Invalid course or chapter ID!")
+    return
+  }
+
   if (props.chapter) {
     chapterForm.put(`/courses/${courseID}/chapters/${props.chapter.id}`, {
       onSuccess: () => {
         toast.success("Chapter updated successfully!")
       },
       onError: errors => {
-        toast.error("Errors while updating chapter:", errors)
+        console.error("Update failed:", errors)
+        toast.error("Error while updating chapter. Check console for details.")
       },
     })
   } else {
-    chapterForm.post("/courses/{course}/chapters", {
+    chapterForm.post(`/courses/${courseID}/chapters`, {
       onSuccess: () => {
         toast.success("Chapter added successfully!")
       },
       onError: errors => {
-        toast.error("Errors while adding chapter:", errors)
+        toast.error("Errors while adding chapter.")
       },
     })
   }

@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('priority');
             $table->string('video_url')->nullable()->after('priority');
             $table->unsignedBigInteger('course_chapter_id');
-            $table->foreign('course_chapter_id')->references('id')->on('course_chapters');
+            $table->foreign('course_chapter_id')->references('id')->on('course_chapters')->onDelete('cascade');
             $table->timestamps();
+
         });
     }
 

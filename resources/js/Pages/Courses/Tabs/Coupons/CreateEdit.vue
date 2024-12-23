@@ -14,11 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import Layout from "../_components/Layout.vue"
-
-defineOptions({
-  layout: Layout,
-})
 
 const course = usePage().url.split("/")[2]
 
@@ -51,7 +46,7 @@ const couponForm = useForm({
  */
 const handleSubmit = () => {
   if (props.coupon) {
-    couponForm.put(`/courses/${course}/coupons/${props.coupon.id}`, {
+    couponForm.put(`/coupons/${props.coupon.id}`, {
       onSuccess: () => {
         toast.success("Coupon updated successfully!")
         router.get(`/courses/${course}/coupons`)

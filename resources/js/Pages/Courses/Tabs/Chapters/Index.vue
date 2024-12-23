@@ -73,7 +73,7 @@ const handleDelete = (id: number) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow v-for="chapter in chapters" :key="chapter.id">
+          <TableRow v-for="(chapter, index) in chapters" :key="chapter.id">
             <TableCell
               class="font-medium"
               @click="
@@ -81,7 +81,7 @@ const handleDelete = (id: number) => {
                   `/courses/${course}/chapters/${chapter.id}/lessons`
                 )
               "
-              >{{ chapter.id }}</TableCell
+              >{{ index + 1 }}</TableCell
             >
             <TableCell
               @click="

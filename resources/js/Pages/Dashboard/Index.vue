@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Layout from "@/Layouts/Layout.vue"
 import RiseIcon from "@/assets/Icons/Commissions/RiseIcon.vue"
 import Badge from "@/components/ui/badge/Badge.vue"
 import { Button } from "@/components/ui/button"

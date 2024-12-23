@@ -46,7 +46,7 @@ import {
   UserRoundCog,
   UsersIcon,
 } from "lucide-vue-next"
-import { ref } from "vue"
+import { ref, watch } from "vue"
 import { Toaster } from "@/components/ui/sonner"
 
 const data = {
@@ -55,23 +55,6 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
   navMain: [
     {
       title: "Dashboard",
@@ -94,16 +77,7 @@ const data = {
       url: "/communication/reviews",
       icon: Mails,
     },
-    {
-      title: "Revenue",
-      url: "#",
-      icon: CircleDollarSign,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings,
-    },
+
     {
       title: "Users",
       url: "/users",
@@ -122,19 +96,24 @@ const data = {
   ],
 }
 
-const activeTeam = ref(data.teams[0])
+import { usePage } from "@inertiajs/vue3"
 
-function setActiveTeam(team: (typeof data.teams)[number]) {
-  activeTeam.value = team
+const activeClass = "text-primary"
+
+const updateActiveState = () => {
+  const { url } = usePage()
+  data.navMain.forEach(item => {
+    item.isActive = url.includes(item.url)
+  })
 }
 
-import { router, usePage } from "@inertiajs/vue3"
-import { Button } from "@/components/ui/button"
-
-const { url } = usePage()
-const pathname = url
-
-const active = "text-primary"
+watch(
+  () => usePage().url,
+  () => {
+    updateActiveState()
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
@@ -172,10 +151,10 @@ const active = "text-primary"
             >
               <SidebarMenuItem
                 class="hover:text-primary"
-                @click="router.get(item.url)"
-                :class="pathname.includes(item.url) ? active : ''"
+                :key="item.title"
+                :class="{ [activeClass]: item.isActive }"
               >
-                <SidebarMenuButton :tooltip="item.title">
+                <SidebarMenuButton @click="$inertia.get(item.url)">
                   <div>
                     <component :is="item.icon" class="size-5" />
                   </div>
@@ -293,7 +272,7 @@ const active = "text-primary"
               href="reviews"
               class="pb-2 text-sm hover:text-primary"
               :class="
-                pathname.includes('reviews')
+                usePage().url.includes('reviews')
                   ? 'border-b-[2px] border-primary text-primary'
                   : ''
               "
@@ -304,23 +283,12 @@ const active = "text-primary"
               href="messages"
               class="pb-2 text-sm hover:text-primary"
               :class="
-                pathname.includes('messages')
+                usePage().url.includes('messages')
                   ? 'border-b-[2px] border-primary text-primary'
                   : ''
               "
             >
               Messages
-            </Link>
-            <Link
-              href="notifications"
-              class="pb-2 text-sm hover:text-primary"
-              :class="
-                pathname.includes('notifications')
-                  ? 'border-b-[2px] border-primary text-primary'
-                  : ''
-              "
-            >
-              Notifications
             </Link>
           </div>
           <Separator class="mt-0 pt-0" />

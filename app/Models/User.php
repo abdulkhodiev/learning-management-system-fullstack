@@ -70,4 +70,10 @@ class User extends Authenticatable
     public function courseReview(): HasMany{
         return $this->hasMany(CourseReview::class);
     }
+
+    public function chat(): HasMany
+    {
+        return $this->hasMany(Chat::class );
+    }
 }
+

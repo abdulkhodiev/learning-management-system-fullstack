@@ -1,66 +1,143 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# LMS Admin Panel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Installation Guide
 
-## About Laravel
+This is the admin panel for the LMS (Learning Management System) built with Laravel, Inertia.js, Vue 3, and Sail. Follow the steps below to set up the project on your local environment.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Prerequisites
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Before starting the installation, ensure that the following dependencies are installed:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Docker](https://www.docker.com/products/docker-desktop) (for running the application in containers via Sail)
+- [PHP](https://www.php.net/downloads.php) (PHP 8.3 or higher)
+- [Composer](https://getcomposer.org/download/) (for managing PHP dependencies)
+- [Node.js](https://nodejs.org/en/download/) (for building and running JavaScript assets)
+- [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) or [yarn](https://classic.yarnpkg.com/en/docs/install/) (for managing JavaScript packages)
 
-## Learning Laravel
+### Step 1: Clone the Repository
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Clone the repository to your local machine using Git:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone <repository-url>
+cd <project-directory>
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Step 2: Install PHP and JavaScript Dependencies
 
-## Laravel Sponsors
+Install PHP dependencies using Composer:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+First, ensure Composer is installed. If not, download and install it from here.
 
-### Premium Partners
+Run the following command to install PHP dependencies:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```bash
+./vendor/bin/sail composer install
+```
 
-## Contributing
+Install JavaScript dependencies using npm (or yarn):
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+You can use either npm or yarn. To install using npm, run:
 
-## Code of Conduct
+```bash
+./vendor/bin/sail npm install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Or, if you're using Yarn:
 
-## Security Vulnerabilities
+```
+bash
+./vendor/bin/sail yarn install
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Step 3: Set Up the Environment File
 
-## License
+Copy the .env.example to .env:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Laravel uses the .env file to manage environment variables. Copy the example environment file to create your .env file:
+
+```bash
+cp .env.example .env
+```
+
+Edit the .env file:
+
+Open the .env file and configure the settings to match your local environment. By default, Sail uses a MySQL Docker container, so ensure that the database configuration is correct:
+
+```env
+Copy code
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=root
+DB_PASSWORD=root
+```
+
+### Step 4: Generate Application Key
+
+Run the following command to generate a new application key:
+
+```bash
+./vendor/bin/sail artisan key:generate
+```
+
+This command will generate a new key and add it to your .env file.
+
+### Step 5: Build and Start Docker Containers
+
+Run the following command to build and start the application and database containers using Sail (Laravel's Docker environment):
+
+```bash
+./vendor/bin/sail up
+```
+
+This will start the Laravel application, MySQL database, and other required services in Docker containers.
+
+### Step 6: Run Migrations
+
+Create and migrate the database by running:
+
+```bash
+./vendor/bin/sail artisan migrate
+```
+
+This will set up the required database tables.
+
+### Step 7: Seed the Database
+
+To populate the database with default data (like users), run the following seeder command:
+
+```bash
+./vendor/bin/sail artisan db:seed --class=UserSeeder
+```
+
+This will insert default users (as specified in the UserSeeder class) into the database.
+
+### Step 8: Build and Run the Frontend
+
+Build frontend assets:
+
+Run the following command to build the Vue 3 frontend assets:
+
+```bash
+./vendor/bin/sail npm run dev
+```
+
+This will compile the assets and make them available to the application.
+
+### Step 9: Access the Application
+
+Once the application is up and running, you can access the LMS admin panel in your browser:
+
+Troubleshooting
+If you encounter issues with Docker or Sail, ensure that Docker is running correctly on your system and try restarting the containers by running ./vendor/bin/sail down followed by ./vendor/bin/sail up.
+If you face issues with migrations or seeders, check the .env file to ensure your database configuration matches the Docker container setup.
+If you're having issues with frontend compilation, ensure that you have Node.js and npm installed correctly.
+Additional Notes
+For any additional configurations or customizations, refer to the Laravel documentation.
+If you need to customize the user roles and permissions, look into the UserSeeder and other related classes for adjusting default data.
+
+```
+
+```

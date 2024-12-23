@@ -1,7 +1,6 @@
-<script setup lang="ts">
-import { reactive, watch } from "vue"
-import { usePage } from "@inertiajs/vue3"
-
+<script lang="ts" setup>
+import Input from "@/components/ui/input/Input.vue"
+import { User } from "@/types/Models/user"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Collapsible } from "@/components/ui/collapsible"
 import {
@@ -30,6 +29,7 @@ import {
 } from "@/components/ui/sidebar"
 import {
   AlignLeftIcon,
+  ArrowLeft,
   AudioWaveform,
   BadgeCheck,
   Bell,
@@ -38,6 +38,7 @@ import {
   CircleGauge,
   Command,
   CreditCard,
+  Divide,
   GalleryVerticalEnd,
   LayoutList,
   LogOut,
@@ -48,76 +49,58 @@ import {
   UserRoundCog,
   UsersIcon,
 } from "lucide-vue-next"
+import { ref, watch, computed } from "vue"
 import { Toaster } from "@/components/ui/sonner"
 
-const data = reactive({
+const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
   navMain: [
     {
       title: "Dashboard",
       url: "/dashboard",
       icon: CircleGauge,
-      isActive: false,
+      isActive: true,
     },
     {
       title: "Courses",
       url: "/courses",
       icon: Book,
-      isActive: false,
     },
     {
       title: "Categories",
       url: "/categories",
       icon: LayoutList,
-      isActive: false,
     },
     {
       title: "Communication",
       url: "/communication/reviews",
       icon: Mails,
-      isActive: false,
     },
+
     {
       title: "Users",
       url: "/users",
       icon: UsersIcon,
-      isActive: false,
     },
     {
       title: "Roles",
       url: "/roles",
       icon: UserRoundCog,
-      isActive: false,
     },
     {
       title: "Permissions",
       url: "/permissions",
       icon: ShieldPlus,
-      isActive: false,
     },
   ],
-})
+}
+
+import { router, usePage } from "@inertiajs/vue3"
+import Layout from "./_components/Layout.vue"
 
 const activeClass = "text-primary"
 
@@ -135,6 +118,29 @@ watch(
   },
   { immediate: true }
 )
+
+defineOptions({ layout: Layout })
+
+const props = defineProps<{
+  students: User[]
+}>()
+
+const currentChat = ref<User>(props.students[0])
+
+const searchQuery = ref("")
+
+const filteredStudents = computed(() => {
+  return props.students.filter(student =>
+    `${student.first_name} ${student.last_name}`
+      .toLowerCase()
+      .includes(searchQuery.value.toLowerCase())
+  )
+})
+
+const setActiveUser = (user: User) => {
+  console.log("update:currentUser", user)
+  router.get(`/communication/messages/${user.id}`)
+}
 </script>
 
 <template>
@@ -167,6 +173,7 @@ watch(
               v-for="item in data.navMain"
               :key="item.title"
               as-child
+              :default-open="item.isActive"
               class="group/collapsible"
             >
               <SidebarMenuItem
@@ -281,7 +288,82 @@ watch(
         </div>
       </header>
       <div class="flex flex-1 flex-col gap-4 p-4">
-        <slot />
+        <div class="flex items-center justify-between">
+          <h1>Communication</h1>
+        </div>
+        <div>
+          <div
+            class="flex flex-wrap items-center justify-center gap-4 pb-0 md:justify-start"
+          >
+            <Link
+              href="reviews"
+              class="pb-2 text-sm hover:text-primary"
+              :class="
+                usePage().url.includes('reviews')
+                  ? 'border-b-[2px] border-primary text-primary'
+                  : ''
+              "
+            >
+              Reviews
+            </Link>
+            <Link
+              href="messages"
+              class="pb-2 text-sm hover:text-primary"
+              :class="
+                usePage().url.includes('messages')
+                  ? 'border-b-[2px] border-primary text-primary'
+                  : ''
+              "
+            >
+              Messages
+            </Link>
+          </div>
+          <Separator class="mt-0 pt-0" />
+        </div>
+        <div class="flex w-full gap-3">
+          <div class="w-full max-w-[400px]">
+            <div class="w-full space-y-4 rounded-xl">
+              <div>
+                <Input
+                  type="search"
+                  placeholder="Search"
+                  class="bg-white"
+                  v-model="searchQuery"
+                />
+              </div>
+              <div class="overflow-hidden rounded-xl bg-white">
+                <div
+                  v-for="student in filteredStudents"
+                  :key="student.id"
+                  @click="setActiveUser(student)"
+                >
+                  <div
+                    :class="
+                      currentChat && currentChat.id === student.id
+                        ? 'border-l-2 border-primary text-primary-foreground'
+                        : ''
+                    "
+                    class="flex cursor-pointer items-start gap-2 p-2 hover:bg-gray-100"
+                  >
+                    <img src="@/assets/Logo.png" alt="" class="h-10 w-10" />
+                    <div>
+                      <h4 class="text-lg text-black">
+                        {{ student.first_name }} {{ student.last_name }}
+                      </h4>
+                      <p class="text-sm text-muted-foreground">
+                        {{ student.role }}
+                      </p>
+                    </div>
+                  </div>
+                  <Separator />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="h-full max-h-[650px] w-full rounded-xl border bg-white">
+            <slot />
+          </div>
+        </div>
         <Toaster position="top-center" :rich-colors="true" />
       </div>
     </SidebarInset>

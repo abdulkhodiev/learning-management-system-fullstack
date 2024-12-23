@@ -18,6 +18,7 @@ import { CourseWithDetails } from "@/types/Models/course"
 import Separator from "@/components/ui/separator/Separator.vue"
 import Badge from "@/components/ui/badge/Badge.vue"
 import { PenBox, Trash2Icon } from "lucide-vue-next"
+import Layout from "@/Layouts/Layout.vue"
 
 const props = defineProps<{ courses: CourseWithDetails[] }>()
 

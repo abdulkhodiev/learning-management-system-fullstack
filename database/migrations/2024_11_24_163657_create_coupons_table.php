@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('coupons', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('course_id');
-            $table->foreign('course_id')->references('id')->on('courses');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->string('name');
             $table->string('coupon_code');
             $table->integer('quantity');
             $table->integer('uses_per_customer')->default(1);
             $table->float('discount_amount');
-            $table->dateTime(column: 'start_time');
-            $table->dateTime(column: 'end_time');
+            $table->dateTime( 'start_time');
+            $table->dateTime( 'end_time');
             $table->timestamps();
         });
     }

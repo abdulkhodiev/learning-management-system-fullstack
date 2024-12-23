@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\CourseControllers;
 
+use App\Actions\Course\Tabs\Coupons\CreateCouponAction;
 use App\Actions\Course\Tabs\Coupons\GetAllCourseCouponsAction;
+use App\Actions\Course\Tabs\Coupons\GetCouponStatistics;
 use App\Actions\Course\Tabs\Coupons\UpdateCouponAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Course\Tabs\Coupons\CreateCouponRequest;
@@ -23,11 +25,13 @@ class CourseCouponController extends Controller
  * @return \Inertia\Response
  */
 
-    public function index(GetAllCourseCouponsAction $action, int $courseId): Response
+    public function index(GetAllCourseCouponsAction $action, int $courseId, GetCouponStatistics $getCouponStatistics): Response
     {
         $coupons = $action->execute($courseId);
+        $couponStatistics = $getCouponStatistics->execute($courseId);
         return Inertia::render('Courses/Tabs/Coupons/Index', [
             'coupons'=> $coupons,
+            'couponStatistics' => $couponStatistics
         ] );
     }
 
@@ -50,11 +54,11 @@ class CourseCouponController extends Controller
      * @return \Illuminate\Http\RedirectResponse A redirect response to the coupons index page.
      */
 
-    public function store(CreateCouponRequest $request, CreateCouponRequest $action): RedirectResponse
+    public function store(CreateCouponAction $action, CreateCouponRequest $request): RedirectResponse
     {
         $action->execute($request->validated());
 
-        return redirect()->route('courses.tabs.coupons.index', $request->course_id);
+        return redirect()->route('course.coupons.index', $request->course_id);
     }
 
     /**
@@ -63,7 +67,7 @@ class CourseCouponController extends Controller
      * @param Coupon $coupon The coupon to edit.
      * @return \Inertia\Response
      */
-    public function edit(Coupon $coupon): Response
+    public function edit( Coupon $coupon): Response
     {
         return Inertia::render('Courses/Tabs/Coupons/CreateEdit', [
             'coupon' => $coupon
@@ -83,7 +87,7 @@ class CourseCouponController extends Controller
     {
         $action->execute($coupon, $request->validated());
 
-        return redirect()->route('courses.tabs.coupons.index', $request->course_id);
+        return redirect()->route('course.coupons.index', $request->course_id);
     }
 
     /**
@@ -96,7 +100,7 @@ class CourseCouponController extends Controller
     {
         $coupon->delete();
 
-        return redirect()->route('courses.tabs.coupons.index', $coupon->course_id);
+        return redirect()->route('course.coupons.index', $coupon->course_id);
     }
 
 

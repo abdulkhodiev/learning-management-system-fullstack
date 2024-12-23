@@ -46,10 +46,10 @@ import {
   UserRoundCog,
   UsersIcon,
 } from "lucide-vue-next"
-import { ref } from "vue"
+import { reactive, watch } from "vue"
 import { Toaster } from "@/components/ui/sonner"
 
-const data = {
+const data = reactive({
   user: {
     name: "shadcn",
     email: "m@example.com",
@@ -95,16 +95,6 @@ const data = {
       icon: Mails,
     },
     {
-      title: "Revenue",
-      url: "#",
-      icon: CircleDollarSign,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings,
-    },
-    {
       title: "Users",
       url: "/users",
       icon: UsersIcon,
@@ -120,21 +110,29 @@ const data = {
       icon: ShieldPlus,
     },
   ],
-}
+})
 
-const activeTeam = ref(data.teams[0])
-
-function setActiveTeam(team: (typeof data.teams)[number]) {
-  activeTeam.value = team
-}
-
-import { router, usePage } from "@inertiajs/vue3"
+import { usePage } from "@inertiajs/vue3"
 import { Button } from "@/components/ui/button"
 
-const { url } = usePage()
-const pathname = url
+const activeClass = "text-primary"
 
-const active = "text-primary"
+const updateActiveState = () => {
+  const { url } = usePage()
+  data.navMain.forEach(item => {
+    item.isActive = url.includes(item.url)
+  })
+}
+
+watch(
+  () => usePage().url,
+  () => {
+    updateActiveState()
+  },
+  { immediate: true }
+)
+
+const courseId = usePage().url.split("/")[2]
 </script>
 
 <template>
@@ -167,15 +165,14 @@ const active = "text-primary"
               v-for="item in data.navMain"
               :key="item.title"
               as-child
-              :default-open="item.isActive"
               class="group/collapsible"
             >
               <SidebarMenuItem
                 class="hover:text-primary"
-                @click="router.get(item.url)"
-                :class="pathname.includes(item.url) ? active : ''"
+                :key="item.title"
+                :class="{ [activeClass]: item.isActive }"
               >
-                <SidebarMenuButton :tooltip="item.title">
+                <SidebarMenuButton @click="$inertia.get(item.url)">
                   <div>
                     <component :is="item.icon" class="size-5" />
                   </div>
@@ -293,10 +290,10 @@ const active = "text-primary"
             class="flex flex-wrap items-center justify-center gap-4 pb-0 md:justify-start"
           >
             <Link
-              href="commissions"
+              :href="`/courses/${courseId}/commissions`"
               class="pb-2 text-sm hover:text-primary"
               :class="
-                pathname.includes('commissions')
+                usePage().url.includes('commissions')
                   ? 'border-b-[2px] border-primary text-primary'
                   : ''
               "
@@ -304,10 +301,10 @@ const active = "text-primary"
               Commissions
             </Link>
             <Link
-              href="reviews"
+              :href="`/courses/${courseId}/reviews`"
               class="pb-2 text-sm hover:text-primary"
               :class="
-                pathname.includes('reviews')
+                usePage().url.includes('reviews')
                   ? 'border-b-[2px] border-primary text-primary'
                   : ''
               "
@@ -315,10 +312,10 @@ const active = "text-primary"
               Reviews
             </Link>
             <Link
-              href="chapters"
+              :href="`/courses/${courseId}/chapters`"
               class="pb-2 text-sm hover:text-primary"
               :class="
-                pathname.includes('chapters')
+                usePage().url.includes('chapters')
                   ? 'border-b-[2px] border-primary text-primary'
                   : ''
               "
@@ -326,10 +323,10 @@ const active = "text-primary"
               Chapters
             </Link>
             <Link
-              href="coupons"
+              :href="`/courses/${courseId}/coupons`"
               class="pb-2 text-sm hover:text-primary"
               :class="
-                pathname.includes('coupons')
+                usePage().url.includes('coupons')
                   ? 'border-b-[2px] border-primary text-primary'
                   : ''
               "

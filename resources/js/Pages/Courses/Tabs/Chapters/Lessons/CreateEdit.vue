@@ -109,6 +109,7 @@ const handleSubmit = () => {
             <Input
               v-model="lessonForm.priority"
               id="priority"
+              type="number"
               placeholder="Enter priority..."
             />
             <FormMessage v-if="lessonForm.errors.priority" class="mt-1">

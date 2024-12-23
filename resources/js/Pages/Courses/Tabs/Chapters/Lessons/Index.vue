@@ -36,6 +36,8 @@ const props = defineProps<{
   lessons: Lesson[]
 }>()
 
+console.log(props.lessons)
+
 const handleDelete = (id: string) => {
   router.delete(`/courses/${course}/chapters/${chapter}/lessons/${id}`)
 }

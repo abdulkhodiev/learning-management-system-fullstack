@@ -23,12 +23,12 @@ class CourseChapterLessonController extends Controller
      * Get all lessons for the given chapter.
      *
      * @param GetAllLessonsAction $action
-     * @param string $chapterId
+     * @param string $chapter
      * @return Response
      */
-    public function index(GetAllLessonsAction $action, string $chapterId): Response
+    public function index(GetAllLessonsAction $action, int $course, int $chapter): Response
     {
-        $lessons = $action->execute($chapterId);
+        $lessons = $action->execute($chapter);
 
         return Inertia::render('Courses/Tabs/Chapters/Lessons/Index' ,
         ['lessons' => $lessons]);
@@ -59,12 +59,12 @@ class CourseChapterLessonController extends Controller
         $action->execute($request->validated());
 
         // Retrieve the correct route parameters
-        $course = $request->route('courseId');
-        $chapter = $request->route('chapterId');
+        $course = $request->route('course');
+        $chapter = $request->route('chapter');
 
         return redirect()->route('course.chapters.lessons.index', [
-            'courseId' => $course,
-            'chapterId' => $chapter,
+            'course' => $course,
+            'chapter' => $chapter,
         ]);
     }
 
@@ -75,11 +75,13 @@ class CourseChapterLessonController extends Controller
      * @param Lesson $lesson The lesson instance to be edited.
      * @return Response The Inertia response rendering the lesson edit page.
      */
-    public function edit(Lesson $lesson): Response
+    public function edit(int $course, int $chapter, Lesson $lesson): Response
     {
 
         return Inertia::render('Courses/Tabs/Chapters/Lessons/CreateEdit',
-        ['lesson' => $lesson,]);
+        ['lesson' => $lesson]);
+
+
     }
 
     /**
@@ -92,19 +94,22 @@ class CourseChapterLessonController extends Controller
      * @return \Illuminate\Http\RedirectResponse A redirect response to the lessons page.
      */
     public function update(
+        int $course,
+        int $chapter,
         Lesson $lesson,
         UpdateLessonAction $action,
         UpdateLessonRequest $request
     ): RedirectResponse {
-        $action->execute($request->validated(), $lesson->id);
+
+        $action->execute($lesson,$request->validated());
 
         // Retrieve the correct route parameters
         $course = $request->route('course');
         $chapter = $request->route('chapter');
 
         return redirect()->route('course.chapters.lessons.index',[
-            'courseId' => $course,
-            'chapterId' => $chapter,
+            'course' => $course,
+            'chapter' => $chapter,
         ]);
     }
 
@@ -113,7 +118,7 @@ class CourseChapterLessonController extends Controller
      *
      * @param Lesson $lesson The lesson to be deleted.
      */
-    public function destroy(Lesson $lesson, DestroyLessonAction $action): void
+    public function destroy(int $course, int $chapter, Lesson $lesson, DestroyLessonAction $action): void
     {
         $action->execute($lesson);
     }

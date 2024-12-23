@@ -50,7 +50,7 @@ const handleDelete = (id: number) => {
 
     <div
       v-else
-      class="grid justify-between gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+      class="grid grid-cols-2 justify-between gap-4 md:grid-cols-3 lg:grid-cols-4"
     >
       <Card
         v-for="category in categories"

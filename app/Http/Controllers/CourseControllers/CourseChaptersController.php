@@ -75,10 +75,9 @@ class CourseChaptersController extends Controller
     public function update(
         UpdateChapterAction $action,
         UpdateChapterRequest $request,
-        CourseChapter $courseChapter
     ): RedirectResponse {
 
-      $action->execute($courseChapter, $request->validated());
+      $action->execute($request->validated());
 
         return redirect()->route('course.chapters.index',
         ['course' => $request->course_id])
@@ -92,15 +91,21 @@ class CourseChaptersController extends Controller
      * @param  \App\Actions\Course\Tabs\Chapters\DestroyChapterAction  $action
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(
-        DestroyChapterAction $action,
-        CourseChapter $courseChapter
-    ): RedirectResponse {
+    public function destroy(DestroyChapterAction $action, int $course, int $chapter): RedirectResponse
+    {
+
+
+        $courseChapter = CourseChapter::find($chapter);
+
         $action->execute($courseChapter);
 
-        return redirect()->route('course.chapters.index',
-        ['course' => $courseChapter->course_id])
-            ->with('success', 'Chapter deleted successfully.');
+        return redirect()->route('course.chapters.index', [
+            'course' => $course,
+        ])->with('success', 'Chapter deleted successfully.');
     }
+
+
+
+
 
 }

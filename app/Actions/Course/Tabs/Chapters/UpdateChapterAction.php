@@ -6,16 +6,17 @@ use App\Models\CourseChapter;
 
 class UpdateChapterAction
 {
+
     /**
-     * Updates the given chapter with the provided data.
+     * Updates the given course chapter with the provided data.
      *
-     * @param CourseChapter $courseChapter The chapter instance to be updated.
-     * @param array $data The data to update the chapter with.
-     * @return CourseChapter The updated chapter instance.
+     * @param CourseChapter $courseChapter The course chapter instance to be updated.
+     * @param array $data The data to update the course chapter with.
+     * @return void
      */
-    public function execute(CourseChapter $courseChapter, array $data):CourseChapter
+
+    public function execute( array $data): void
     {
-        $courseChapter->update($data);
-        return $courseChapter;
+        CourseChapter::find($data['course_id'])->update($data);
     }
 }

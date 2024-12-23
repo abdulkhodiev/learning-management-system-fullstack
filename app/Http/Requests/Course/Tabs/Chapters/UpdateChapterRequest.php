@@ -22,8 +22,9 @@ class UpdateChapterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'course_id' => ['required', 'numeric'],
+            'name' => 'required|string|max:255',
+            'course_id' => 'required|exists:courses,id',
         ];
     }
+
 }

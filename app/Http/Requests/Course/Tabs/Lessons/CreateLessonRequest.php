@@ -4,6 +4,7 @@ namespace App\Http\Requests\Course\Tabs\Lessons;
 
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateLessonRequest extends FormRequest
 {
@@ -28,8 +29,17 @@ class CreateLessonRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'duration' => ['required', 'string', 'max:255'],
             'video_url' => ['required', 'string', 'min:0'],
-            'priority' => ['required', 'string', 'min:0'],
+            'priority' => [
+                'required',
+                'integer',
+                'min:0',
+                // Ensure priority is unique within the same chapter
+                Rule::unique('lessons')->where(function ($query) {
+                    return $query->where('course_chapter_id', $this->course_chapter_id);
+                }),
+            ],
             'course_chapter_id' => ['required', 'exists:course_chapters,id'],
         ];
+
     }
 }
